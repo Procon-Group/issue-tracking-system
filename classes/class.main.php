@@ -50,8 +50,13 @@ class Main extends Database {
         $this->loadLanguage();
         if ($is_ajax === true) {
             $arr = explode('/', url_segment());
-            $ajax_page = end($arr);
-            if (file_exists('ajax/' . strtolower($ajax_page) . '.php')) {
+            $ajax_page = strtolower(end($arr));
+            $public_ajax = array('resetemail'); //used from the login page
+            if (!in_array($ajax_page, $public_ajax, true) && $this->authenticate() === false) {
+                http_response_code(403);
+                exit;
+            }
+            if (preg_match('/^[a-z0-9_]+$/', $ajax_page) && file_exists('ajax/' . $ajax_page . '.php')) {
                 include 'ajax/' . strtolower($ajax_page) . '.php';
             } else {
                 response(404);
@@ -72,7 +77,8 @@ class Main extends Database {
         $abbr = $this->getDefaultLanguage();
         $this->default_lang_abbr = $abbr;
         if (isset($_SESSION['logged']) || isset($_COOKIE['logged'])) {
-            $user_id = $_SESSION['logged'] ? $_SESSION['logged']['id'] : unserialize($_COOKIE['logged'])['id'];
+            //only picks the interface language; the cookie itself is verified later in authenticate()
+            $user_id = isset($_SESSION['logged']) ? (int) $_SESSION['logged']['id'] : (int) explode(':', (string) $_COOKIE['logged'])[0];
             $lang_abbr = $this->getUserLanguage($user_id);
         }
         if (isset($lang_abbr) && $lang_abbr !== null) {
@@ -139,54 +145,65 @@ class Main extends Database {
         $_SESSION['alert'] = '<div class="alert alert-' . $type . ' ' . $login_alert . ' top-20">' . $msg . '</div>';
     }
 
+    private function setRememberCookie($value, $expire) {
+        $secure = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
+        setcookie("logged", $value, $expire, '/', '', $secure, true);
+    }
+
     public function setLogged($cookie, $info_array) {
+        $info_array = array('id' => (int) $info_array['id'], 'username' => $info_array['username']);
+        session_regenerate_id(true);
         $this->setLastLogin($info_array['id']);
         if ($cookie === true) {
+            //cookie holds a random token; only its hash is stored, so it cannot be forged or replayed from the db
+            $token = random_token();
+            $this->setRememberToken($info_array['id'], $token);
             $seconds = 60 * 60 * 24 * $this->day;
-            setcookie("logged", serialize($info_array), time() + $seconds);
+            $this->setRememberCookie($info_array['id'] . ':' . $token, time() + $seconds);
         }
         $_SESSION['logged'] = $info_array;
     }
 
+    public function authenticate() { //true if the visitor has a valid session or remember-me cookie
+        if (!isset($_SESSION['logged']) && isset($_COOKIE['logged'])) {
+            $parts = explode(':', (string) $_COOKIE['logged'], 2);
+            $info = count($parts) === 2 ? $this->checkRememberToken((int) $parts[0], $parts[1]) : false;
+            if ($info === false) {
+                $this->setRememberCookie('', time() - 3600);
+                unset($_COOKIE['logged']);
+                return false;
+            }
+            session_regenerate_id(true);
+            $_SESSION['logged'] = $info;
+        }
+        if (!isset($_SESSION['logged'])) {
+            return false;
+        }
+        $this->user_id = (int) $_SESSION['logged']['id'];
+        $this->user_name = $_SESSION['logged']['username'];
+        $usr_info = $this->getUsers(0, 0, null, $this->user_id);
+        if (empty($usr_info)) {
+            unset($_SESSION['logged']);
+            return false;
+        }
+        $this->setLastActive($this->user_id);
+        $this->dash_filter = unserialize($usr_info[0]['dash_filter'], array('allowed_classes' => false));
+        $this->social = unserialize($usr_info[0]['social'], array('allowed_classes' => false));
+        $this->username = $usr_info[0]['username'];
+        $this->fullname = $usr_info[0]['fullname'];
+        $this->image = $usr_info[0]['image'];
+        $this->permissions = explode(",", $usr_info[0]['privileges']);
+        $this->profession = $usr_info[0]['profession_name'];
+        $this->email = $usr_info[0]['email'];
+        $this->email_notif = $usr_info[0]['email_notif'];
+        return true;
+    }
+
     public function loginCheck() {
-        if (isset($_SESSION['logged'])) {
-            $this->user_id = $_SESSION['logged']['id'];
-            $this->user_name = $_SESSION['logged']['username'];
-            $usr_info = $this->getUsers(0, 0, null, (int) $this->user_id);
-            if (empty($usr_info)) {
-                $this->logOut();
-                exit;
-            } else {
-                $this->setLastActive($_SESSION['logged']['id']);
-            }
-        } elseif (isset($_COOKIE['logged'])) {
-            $arr = unserialize($_COOKIE['logged']);
-            $this->user_id = $arr['id'];
-            $this->user_name = $arr['username'];
-            $usr_info = $this->getUsers(0, 0, null, (int) $this->user_id);
-            if (empty($usr_info)) {
-                $this->logOut();
-                exit;
-            } else {
-                $this->setLastActive($arr['id']);
-            }
-        }
-
-        if (isset($usr_info) && $usr_info !== null) {
-            $this->dash_filter = unserialize($usr_info[0]['dash_filter']);
-            $this->social = unserialize($usr_info[0]['social']);
-            $this->username = $usr_info[0]['username'];
-            $this->fullname = $usr_info[0]['fullname'];
-            $this->image = $usr_info[0]['image'];
-            $this->permissions = explode(",", $usr_info[0]['privileges']);
-            $this->profession = $usr_info[0]['profession_name'];
-            $this->email = $usr_info[0]['email'];
-            $this->email_notif = $usr_info[0]['email_notif'];
-        }
-
-        if ((isset($_SESSION['logged']) || isset($_COOKIE['logged'])) && $this->page == 'login') {
+        $logged = $this->authenticate();
+        if ($logged === true && $this->page == 'login') {
             redirect(base_url('home'));
-        } elseif ((!isset($_SESSION['logged']) && !isset($_COOKIE['logged'])) && $this->page != 'login') {
+        } elseif ($logged === false && $this->page != 'login') {
             redirect(base_url('login'));
         }
     }
@@ -289,8 +306,11 @@ class Main extends Database {
     }
 
     public function logOut() {
+        if (isset($_SESSION['logged']['id'])) {
+            $this->setRememberToken($_SESSION['logged']['id'], null);
+        }
         unset($_SESSION['logged']);
-        setcookie("logged", "", time() - 3600);
+        $this->setRememberCookie('', time() - 3600);
         redirect(base_url('login'));
         exit;
     }

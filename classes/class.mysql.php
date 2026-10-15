@@ -15,6 +15,7 @@ class Mysql {
         if(!class_exists('mysqli')) {
             throw new Exception("No MYSQLi extension");
         }
+        mysqli_report(MYSQLI_REPORT_OFF); //PHP 8.1+ throws on query errors by default; this code expects false
         $this->conn = new mysqli(HOST, USER, PASS, DATABASE);
         if ($this->conn->connect_error) {
             throw new Exception("MySQL connection failed: " . $this->conn->connect_error);
@@ -32,7 +33,53 @@ class Mysql {
     }
 
     public function escape($value) {
-        return trim(mysqli_real_escape_string($this->conn, $value));
+        return trim(mysqli_real_escape_string($this->conn, (string) $value));
+    }
+
+    /*
+     * Safe value helpers - every value that reaches SQL must pass through one of these
+     */
+
+    public function quote($value) { //quoted string literal, or NULL
+        if ($value === null) {
+            return 'NULL';
+        }
+        return "'" . mysqli_real_escape_string($this->conn, (string) $value) . "'";
+    }
+
+    public function intList($values) { //comma separated integers for IN(), never empty
+        if (!is_array($values)) {
+            $values = explode(',', (string) $values);
+        }
+        $ints = array();
+        foreach ($values as $value) {
+            if (trim((string) $value) !== '') {
+                $ints[] = (int) $value;
+            }
+        }
+        return empty($ints) ? '0' : implode(',', array_unique($ints));
+    }
+
+    public function onlyColumns($data, $allowed) { //drop every key that is not an allowed column
+        return array_intersect_key($data, array_flip($allowed));
+    }
+
+    public function insertSql($table, $data) {
+        $columns = array();
+        $values = array();
+        foreach ($data as $column => $value) {
+            $columns[] = '`' . str_replace('`', '', $column) . '`';
+            $values[] = $this->quote($value);
+        }
+        return "INSERT INTO `$table` (" . implode(', ', $columns) . ") VALUES (" . implode(', ', $values) . ")";
+    }
+
+    public function setSql($data) { //SET part of UPDATE
+        $sets = array();
+        foreach ($data as $column => $value) {
+            $sets[] = '`' . str_replace('`', '', $column) . '` = ' . $this->quote($value);
+        }
+        return implode(', ', $sets);
     }
 
     public function query($query) {

@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `for_account` int(11) NOT NULL,
   `username` varchar(20) NOT NULL,
-  `password` varchar(32) NOT NULL,
+  `password` varchar(255) NOT NULL COMMENT 'password_hash()',
   `fullname` varchar(30) NOT NULL,
   `email` varchar(150) NOT NULL,
   `image` varchar(255) DEFAULT NULL COMMENT 'profile picture',
@@ -292,11 +292,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email_notif` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'Receive email when have notification',
   `lang` varchar(5) DEFAULT NULL,
   `privileges` varchar(255) NOT NULL,
+  `remember_token` varchar(64) DEFAULT NULL COMMENT 'sha256 of remember-me cookie token',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`,`for_account`),
   UNIQUE KEY `email` (`email`,`for_account`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
+-- The admin account ships with the old default password (admin), which the app refuses.
+-- Set a real password after importing: php tools/set_password.php admin
 INSERT INTO `users` (`id`, `for_account`, `username`, `password`, `fullname`, `email`, `image`, `prof`, `registered`, `last_login`, `last_active`, `dash_filter`, `social`, `projects`, `email_notif`, `lang`, `privileges`) VALUES
 (1, 1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Demonstration Account', 'admin@pmticket.com', NULL, 1, 1467721962, 1477637142, 1477599995, '', '', ',3', 0, NULL, '1,2,3,4,5,6,7,8,9'); 
 

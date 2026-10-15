@@ -30,10 +30,17 @@ No PHP Frameworks used.
 ![alt text](https://raw.githubusercontent.com/issue-tracking-system/pmTicket/master/screenshots/fr_flag.jpg "Cover")
 
 ### Installation
-+ Upload files to your web server
++ Upload files to your web server (PHP 7.0 or newer)
 + Import DATABASE.sql to your database
 + Set database name, username, password for database to /inc/db.php
-+ START USING IT! Login with username: admin and password: admin
++ Set the admin password from the server command line: `php tools/set_password.php admin`
+  (the shipped admin/admin password is refused at login)
++ START USING IT! Login with username `admin` and the password you just set
+
+#### Upgrading an existing install
++ Run `migrations/001_security_login.sql` against your database once
++ Existing passwords keep working and are upgraded to bcrypt on each user's next login
++ Everyone is logged out of "remember me" sessions once; they just sign in again
 
 ### Used technologies 
 + PHP

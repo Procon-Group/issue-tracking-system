@@ -1,6 +1,6 @@
 <?php
 
-$result = $this->getWikiNotifications($_POST['project_id'], $_POST['user_id'], $_POST['from'], $_POST['to']);
+$result = $this->getWikiNotifications($_POST['project_id'], $this->user_id, $_POST['from'], $_POST['to']);
 if(!empty($result['notifs'])) {
     $html = '';
     foreach ($result['notifs'] as $res) {

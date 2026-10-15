@@ -7,7 +7,9 @@ $this->description = 'Account login form, sign in to continue to the tickets';
 
 if (isset($_POST['signin'])) {
     $result = $this->login($_POST['username'], $_POST['password']);
-    if ($result !== false) {
+    if ($result === 'default_password') {
+        $this->set_alert('This account still uses the default password and is locked. Set a new password on the server with: php tools/set_password.php ' . htmlspecialchars($_POST['username']), 'danger', true);
+    } elseif ($result !== false) {
         if (isset($_POST['remember']) && $_POST['remember'] !== null) {
             $this->setLogged(true, $result);
         } else {

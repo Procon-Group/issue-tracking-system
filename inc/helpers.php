@@ -33,11 +33,37 @@ function response($code) {
     exit;
 }
 
-function return_pass($password) {
-    if (preg_match('/^[a-f0-9]{32}$/', $password)) //this is because from pmticket administration i pass md5 password from directly db
-        return $password;
-    else
-        return md5($password);
+function hash_pass($password) {
+    return password_hash((string) $password, PASSWORD_DEFAULT);
+}
+
+function verify_pass($password, $stored_hash) {
+    $stored_hash = (string) $stored_hash;
+    if (preg_match('/^[a-f0-9]{32}$/i', $stored_hash)) { //legacy unsalted md5, rehashed on next login
+        return hash_equals(strtolower($stored_hash), md5((string) $password));
+    }
+    return password_verify((string) $password, $stored_hash);
+}
+
+function pass_needs_rehash($stored_hash) {
+    return password_needs_rehash((string) $stored_hash, PASSWORD_DEFAULT);
+}
+
+function is_default_pass($stored_hash) { //the shipped admin/admin password must never be accepted
+    return verify_pass('admin', $stored_hash);
+}
+
+function random_token($length = 32) {
+    return bin2hex(random_bytes($length));
+}
+
+function random_string($alphabet, $length) {
+    $str = '';
+    $max = strlen($alphabet) - 1;
+    for ($i = 0; $i < $length; $i++) {
+        $str .= $alphabet[random_int(0, $max)];
+    }
+    return $str;
 }
 
 function send_notification_emails($emails) {
