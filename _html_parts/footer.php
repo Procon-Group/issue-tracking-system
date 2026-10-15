@@ -10,14 +10,14 @@ if (isset($_SESSION['logged']) || isset($_COOKIE['logged'])) {
             &middot;
             <a href="https://github.com/issue-tracking-system/Project-Management-Software/issues" target="_blank">Report a Bug <i class="fa fa-bug" aria-hidden="true"></i></a>
         </div>
-        <div class="pm"><?= $_SERVER['HTTP_HOST'] ?></div>
+        <div class="pm"><?= e($_SERVER['HTTP_HOST']) ?></div>
     </footer>
     </div>
 <?php } ?>
-<script src="<?= base_url('assets/bootstrap-select-1.9.4/js/bootstrap-select.min.js') ?>"></script>
-<script src="<?= base_url('assets/bootstrap-select-1.9.4/js/i18n/defaults-en_US.min.js') ?>"></script>
-<script src="<?= base_url('assets/js/bootstrap.min.js') ?>"></script>
-<script src="<?= base_url('assets/js/placeholders.min.js') ?>"></script>
+<script src="<?= e(base_url('assets/bootstrap-select-1.9.4/js/bootstrap-select.min.js')) ?>"></script>
+<script src="<?= e(base_url('assets/bootstrap-select-1.9.4/js/i18n/defaults-en_US.min.js')) ?>"></script>
+<script src="<?= e(base_url('assets/js/bootstrap.min.js')) ?>"></script>
+<script src="<?= e(base_url('assets/js/placeholders.min.js')) ?>"></script>
 <script>
     $(function () {
         $('[data-toggle="popover"]').popover();
@@ -39,15 +39,15 @@ if (DEBUG_MODE === true) {
                     foreach ($this->connections as $c) {
                         ?>
                         <tr class="warning">
-                            <td><?= $c['time'] ?></td>
-                            <td><?= $c['result'] ?></td>
+                            <td><?= e($c['time']) ?></td>
+                            <td><?= e($c['result']) ?></td>
                         </tr>
                         <?php
                     }
                     foreach ($this->queries as $q) {
                         ?>
                         <tr class="success">
-                            <td><?= $q['time'] ?></td>
+                            <td><?= e($q['time']) ?></td>
                             <td><?= htmlspecialchars($q['query']) ?></td>
                         </tr>
                     <?php }

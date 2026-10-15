@@ -7,7 +7,9 @@ $this->description = 'Account login form, sign in to continue to the tickets';
 
 if (isset($_POST['signin'])) {
     $result = $this->login($_POST['username'], $_POST['password']);
-    if ($result !== false) {
+    if ($result === 'default_password') {
+        $this->set_alert('This account still uses the default password and is locked. Set a new password on the server with: php tools/set_password.php ' . $_POST['username'], 'danger', true);
+    } elseif ($result !== false) {
         if (isset($_POST['remember']) && $_POST['remember'] !== null) {
             $this->setLogged(true, $result);
         } else {
@@ -29,9 +31,9 @@ if (!isset($_GET['reset_code'])) {
             <div class="col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <strong class="pull-left"><?= $this->lang_php['sign_to_continue'] ?></strong>
+                        <strong class="pull-left"><?= e($this->lang_php['sign_to_continue']) ?></strong>
                         <a href="http://pmticket.com" class="pull-right">
-                            <img src="<?= base_url('assets/imgs/login_logo.png') ?>" alt="pmTicket.com">
+                            <img src="<?= e(base_url('assets/imgs/login_logo.png')) ?>" alt="pmTicket.com">
                         </a>
                         <div class="clearfix"></div>
                     </div>
@@ -40,7 +42,7 @@ if (!isset($_GET['reset_code'])) {
                             <fieldset>
                                 <div class="row">
                                     <div class="center-block">
-                                        <img class="profile-img" src="<?= $login_image != null ? base_url($GLOBALS['CONFIG']['IMAGELOGINUPLOADDIR'] . $login_image) : base_url('assets/imgs/login-triangle.png') ?>" alt="Login">
+                                        <img class="profile-img" src="<?= e($login_image != null ? base_url($GLOBALS['CONFIG']['IMAGELOGINUPLOADDIR'] . $login_image) : base_url('assets/imgs/login-triangle.png')) ?>" alt="Login">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -50,7 +52,7 @@ if (!isset($_GET['reset_code'])) {
                                                 <span class="input-group-addon">
                                                     <i class="glyphicon glyphicon-user"></i>
                                                 </span> 
-                                                <input class="form-control" placeholder="<?= $this->lang_php['username_or_email'] ?>" name="username" value="<?= isset($_POST['username']) ? $_POST['username'] : '' ?>" type="text" autofocus>
+                                                <input class="form-control" placeholder="<?= e($this->lang_php['username_or_email']) ?>" name="username" value="<?= e(isset($_POST['username']) ? $_POST['username'] : '') ?>" type="text" autofocus>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -58,14 +60,14 @@ if (!isset($_GET['reset_code'])) {
                                                 <span class="input-group-addon">
                                                     <i class="glyphicon glyphicon-lock"></i>
                                                 </span>
-                                                <input class="form-control" placeholder="<?= $this->lang_php['pass'] ?>" name="password" type="password" value="<?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
+                                                <input class="form-control" placeholder="<?= e($this->lang_php['pass']) ?>" name="password" type="password" value="">
                                             </div>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" value="remember-me" name="remember"><?= $this->lang_php['remember_me'] ?></label>
+                                            <label><input type="checkbox" value="remember-me" name="remember"><?= e($this->lang_php['remember_me']) ?></label>
                                         </div>
                                         <div class="form-group">
-                                            <input type="submit" class="btn btn-lg btn-primary btn-block blue-gradient" name="signin" value="<?= $this->lang_php['sign_in'] ?>">
+                                            <input type="submit" class="btn btn-lg btn-primary btn-block blue-gradient" name="signin" value="<?= e($this->lang_php['sign_in']) ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -73,7 +75,7 @@ if (!isset($_GET['reset_code'])) {
                         </form>
                     </div>
                     <div class="panel-footer ">
-                        <?= $this->lang_php['forgot_pass'] ?> <a href="javascript:void(0);" data-toggle="modal" data-target="#passReset"><?= $this->lang_php['click_here'] ?></a>
+                        <?= e($this->lang_php['forgot_pass']) ?> <a href="javascript:void(0);" data-toggle="modal" data-target="#passReset"><?= e($this->lang_php['click_here']) ?></a>
                     </div>
                 </div>
             </div>
@@ -85,7 +87,7 @@ if (!isset($_GET['reset_code'])) {
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><?= $this->lang_php['pass_reset'] ?></h4>
+                    <h4 class="modal-title" id="myModalLabel"><?= e($this->lang_php['pass_reset']) ?></h4>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-danger" id="email_info" style="display:none;"></div>
@@ -99,8 +101,8 @@ if (!isset($_GET['reset_code'])) {
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->lang_php['close'] ?></button>
-                    <button type="button" class="btn btn-primary" onclick="validEmailCheck()"><?= $this->lang_php['reset'] ?></button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= e($this->lang_php['close']) ?></button>
+                    <button type="button" class="btn btn-primary" onclick="validEmailCheck()"><?= e($this->lang_php['reset']) ?></button>
                 </div>
             </div>
         </div>
@@ -115,7 +117,7 @@ if (!isset($_GET['reset_code'])) {
                 $.ajax({
                     type: "POST",
                     async: false,
-                    url: "<?= base_url('resetemail') ?>",
+                    url: <?= js(base_url('resetemail')) ?>,
                     data: {email: email}
                 }).done(function (data) {
                     $("#email_info").empty().append(data).show();
@@ -134,7 +136,7 @@ if (!isset($_GET['reset_code'])) {
         redirect('login');
     } else {
         ?>
-        <p class="text-center"><?= $this->lang_php['ready_reset_pass'] ?>: <b><?= $result ?></b></p>
+        <p class="text-center"><?= e($this->lang_php['ready_reset_pass']) ?>: <b><?= e($result) ?></b></p>
         <?php
     }
 }

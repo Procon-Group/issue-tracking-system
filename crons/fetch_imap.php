@@ -31,7 +31,7 @@ while ($row = $accounts_->fetch_assoc()) {
 if (!empty($accounts)) {
     foreach ($accounts as $account) {
         $acc_id = $account['id'];
-        $projects = $db->query("SELECT projects.id as project_id, projects.name as project_name, projects.timestamp, sync as sync_id, hostname, protocol, port, _ssl, self_signed, folder, username, password FROM projects INNER JOIN sync_connections ON projects.sync = sync_connections.id WHERE projects.sync > 0 AND projects.for_account=" . $acc_id);
+        $projects = $db->query("SELECT projects.id as project_id, projects.name as project_name, projects.timestamp, sync as sync_id, hostname, protocol, port, _ssl, self_signed, folder, username, password FROM projects INNER JOIN sync_connections ON projects.sync = sync_connections.id WHERE projects.sync > 0 AND projects.for_account=" . (int) $acc_id);
         $arr_projects = array();
         while ($row = $projects->fetch_assoc()) {
             $arr_projects[] = $row;
@@ -66,7 +66,7 @@ if (!empty($accounts)) {
                         if (is_int($message['references'])) { //if no reference - is new email
                         } else {
                             $replays[$message['uid']] = array(
-                                'comment' => $db->escape($message['message']), //description of ticket
+                                'comment' => $message['message'], //description of ticket (escaped by insertSql)
                                 'message_uid' => $message['uid'], //uniqe message id
                                 'message_id' => $message['references'],
                                 'time' => $message['date'],
@@ -75,7 +75,7 @@ if (!empty($accounts)) {
                         }
                         $attachments = serialize($message['attachments']);
                         if ($maxid == 0) {
-                            $max_res = $db->query("SELECT MAX(ticket_id) as id FROM tickets WHERE project = " . $project['project_id'] . " AND for_account=" . $acc_id);
+                            $max_res = $db->query("SELECT MAX(ticket_id) as id FROM tickets WHERE project = " . (int) $project['project_id'] . " AND for_account=" . (int) $acc_id);
                             $maxid = $max_res->fetch_object()->id + 1;
                         } else {
                             $maxid++;
@@ -88,7 +88,7 @@ if (!empty($accounts)) {
                             'subject' => isset($message['subject']) ? $message['subject'] : '',
                             'status' => 1, //new ticket
                             'priority' => 3, //priority is high
-                            'description' => $db->escape($message['message']), //description of ticket
+                            'description' => $message['message'], //description of ticket (escaped by insertSql)
                             'message_uid' => $message['uid'], //uniqe message id
                             'message_id' => $message['message_id'],
                             'message_from_email' => $message['from']['address'],
@@ -105,11 +105,9 @@ if (!empty($accounts)) {
 
                     if (!empty($tickets)) {
                         foreach ($tickets as $ticket) { //set new tickets there are no in database with this UID and PROJECT ID
-                            $check = $db->query("SELECT id FROM tickets WHERE message_uid = " . $ticket['message_uid'] . " AND project = " . $ticket['project'] . " AND for_account=" . $acc_id);
+                            $check = $db->query("SELECT id FROM tickets WHERE message_uid = " . (int) $ticket['message_uid'] . " AND project = " . (int) $ticket['project'] . " AND for_account=" . (int) $acc_id);
                             if ($check->num_rows == 0) {
-                                $columns = implode(',', array_keys($ticket));
-                                $values = implode("','", $ticket);
-                                $result = $db->query("INSERT INTO tickets ($columns) VALUES ('$values')");
+                                $result = $db->query($db->insertSql('tickets', $ticket));
                             }
                         }
                     }
@@ -117,24 +115,20 @@ if (!empty($accounts)) {
                         foreach ($replays as $reply) { //set new emails like comments there are have reply message_id and are no allready in database
                             preg_match("/<(.*)>/U", $reply['message_id'], $out);
                             if (isset($out[1])) {
-                                $check_first = $db->query("SELECT id FROM tickets WHERE message_id LIKE '%" . $out[1] . "%' AND for_account=" . $acc_id . " LIMIT 1");
+                                $check_first = $db->query("SELECT id FROM tickets WHERE message_id LIKE '%" . $db->escape(addcslashes($out[1], '%_')) . "%' AND for_account=" . (int) $acc_id . " LIMIT 1");
                                 if ($check_first->num_rows > 0) {
                                     unset($reply['message_id']);
                                     $tid = $check_first->fetch_row();
                                     $reply['ticket_id'] = $tid[0];
-                                    $check_comment = $db->query("SELECT id FROM comments WHERE ticket_id = " . $reply['ticket_id'] . " AND message_uid = " . $reply['message_uid'] . " AND for_account=" . $acc_id);
+                                    $check_comment = $db->query("SELECT id FROM comments WHERE ticket_id = " . (int) $reply['ticket_id'] . " AND message_uid = " . (int) $reply['message_uid'] . " AND for_account=" . (int) $acc_id);
                                     if ($check_comment->num_rows == 0) {
-                                        $columns = implode(',', array_keys($reply));
-                                        $values = implode("','", $reply);
-                                        $result = $db->query("INSERT INTO comments ($columns) VALUES ('$values')");
+                                        $result = $db->query($db->insertSql('comments', $reply));
                                     }
                                 } else { //not categorized? Make it new ticket!
                                     $set_reply_ticket = $tickets_original[$reply['message_uid']];
-                                    $check = $db->query("SELECT id FROM tickets WHERE message_uid = " . $set_reply_ticket['message_uid'] . " AND project = " . $set_reply_ticket['project'] . " AND for_account=" . $acc_id);
+                                    $check = $db->query("SELECT id FROM tickets WHERE message_uid = " . (int) $set_reply_ticket['message_uid'] . " AND project = " . (int) $set_reply_ticket['project'] . " AND for_account=" . (int) $acc_id);
                                     if ($check->num_rows == 0) {
-                                        $columns = implode(',', array_keys($set_reply_ticket));
-                                        $values = implode("','", $set_reply_ticket);
-                                        $result = $db->query("INSERT INTO tickets ($columns) VALUES ('$values')");
+                                        $result = $db->query($db->insertSql('tickets', $set_reply_ticket));
                                     }
                                 }
                             }

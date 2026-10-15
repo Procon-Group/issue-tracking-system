@@ -154,7 +154,9 @@ $('[name="sendEmail"]').click(function () {
 function tagRemove(id, name) {
     $('[data-rem-watch-id="' + id + '"]').remove();
     if (!$('[data-watcher-id="' + id + '"]').length) {
-        $("#listUsers .list-users .list-group").append('<li class="list-group-item" data-watcher-id="' + id + '"><i class="fa fa-user"></i> ' + name + '</li>');
+        var li = $('<li class="list-group-item"><i class="fa fa-user"></i> </li>').attr('data-watcher-id', id);
+        li.append(document.createTextNode(name)); //names are text, never HTML
+        $("#listUsers .list-users .list-group").append(li);
     }
     var arr = new Array();
     var str = $('[name="watchers"]').val();
@@ -167,5 +169,9 @@ function tagRemove(id, name) {
 }
 
 function addUserToList(value, name) {
-    $("#watcher div.tags-input").append('<span class="label label-info tag" data-rem-watch-id="' + value + '">' + name + ' <span class="remove" onClick="tagRemove(' + value + ', \'' + name + '\')"><span class="glyphicon glyphicon-remove"></soan></span></span>');
+    var tag = $('<span class="label label-info tag"></span>').attr('data-rem-watch-id', value).text(name + ' ');
+    var remove = $('<span class="remove"><span class="glyphicon glyphicon-remove"></span></span>').on('click', function () {
+        tagRemove(value, name);
+    });
+    $("#watcher div.tags-input").append(tag.append(remove));
 }

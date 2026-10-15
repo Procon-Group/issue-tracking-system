@@ -11,7 +11,7 @@ $this->title = $_SERVER['HTTP_HOST'] . ' - ' . $this->lang_php['title_settings']
 
 $projects_list = $this->getProjects();
 ?>
-<script src="<?= base_url('assets/js/ckeditor/ckeditor.js') ?>"></script>
+<script src="<?= e(base_url('assets/js/ckeditor/ckeditor.js')) ?>"></script>
 <div id="settings">
     <nav class="navbar navbar-settings navbar-fixed-top">
         <div class="container-fluid">
@@ -20,21 +20,21 @@ $projects_list = $this->getProjects();
                     <span class="sr-only">Toggle navigation</span>
                     <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#"><?= $this->lang_php['general_settings'] ?></a>
+                <a class="navbar-brand" href="#"><?= e($this->lang_php['general_settings']) ?></a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="<?= base_url('settings') ?>"><?= $this->lang_php['overview'] ?></a></li>
-                    <li><a href="<?= base_url('profile/' . $this->user_name) ?>"><?= $this->lang_php['profile'] ?></a></li>
-                    <li><a href="<?= base_url('home') ?>"><?= $this->lang_php['home'] ?></a></li>
-                    <li><a href="<?= base_url('documentation.html') ?>" target="_blank"><?= $this->lang_php['help'] ?></a></li>
+                    <li><a href="<?= e(base_url('settings')) ?>"><?= e($this->lang_php['overview']) ?></a></li>
+                    <li><a href="<?= e(base_url('profile/' . $this->user_name)) ?>"><?= e($this->lang_php['profile']) ?></a></li>
+                    <li><a href="<?= e(base_url('home')) ?>"><?= e($this->lang_php['home']) ?></a></li>
+                    <li><a href="<?= e(base_url('documentation.html')) ?>" target="_blank"><?= e($this->lang_php['help']) ?></a></li>
                 </ul>
                 <form class="navbar-form navbar-right form-s">
-                    <input type="text" class="form-control" name="settings_search" placeholder="<?= $this->lang_php['search'] ?>">
+                    <input type="text" class="form-control" name="settings_search" placeholder="<?= e($this->lang_php['search']) ?>">
                     <div class="list-group" id="settings-query-result">
 
                     </div>
-                    <img src="<?= base_url('assets/imgs/settings-search-spinner.gif') ?>" alt="loading" class="s-loading">
+                    <img src="<?= e(base_url('assets/imgs/settings-search-spinner.gif')) ?>" alt="loading" class="s-loading">
                 </form>
             </div>
         </div>
@@ -44,16 +44,16 @@ $projects_list = $this->getProjects();
         <div class="row">
             <div class="col-sm-3 col-md-2 sidebar">
                 <ul class="nav nav-sidebar">
-                    <li class="<?= url_segment(1) === false ? 'active' : '' ?>"><a href="<?= base_url('settings') ?>"><?= $this->lang_php['overview'] ?> <span class="sr-only">(current)</span></a></li>
-                    <li class="<?= url_segment(1) === 'general' ? 'active' : '' ?>"><a href="<?= base_url('settings/general') ?>"><?= $this->lang_php['general'] ?> <span class="sr-only">(current)</span></a></li>
-                    <li class="<?= url_segment(1) == 'projects' ? 'active' : '' ?>"><a href="<?= base_url('settings/projects') ?>"><?= $this->lang_php['projects'] ?></a></li>
-                    <li class="<?= url_segment(1) == 'profiles' ? 'active' : '' ?>"><a href="<?= base_url('settings/profiles') ?>"><?= $this->lang_php['profiles'] ?></a></li>
-                    <li class="<?= url_segment(1) == 'syncing' ? 'active' : '' ?>"><a href="<?= base_url('settings/syncing') ?>"><?= $this->lang_php['emails_syncing'] ?></a></li>
-                    <li class="<?= url_segment(1) == 'logs' ? 'active' : '' ?>"><a href="<?= base_url('settings/logs') ?>"><?= $this->lang_php['logs'] ?></a></li>
+                    <li class="<?= e(url_segment(1) === false ? 'active' : '') ?>"><a href="<?= e(base_url('settings')) ?>"><?= e($this->lang_php['overview']) ?> <span class="sr-only">(current)</span></a></li>
+                    <li class="<?= e(url_segment(1) === 'general' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/general')) ?>"><?= e($this->lang_php['general']) ?> <span class="sr-only">(current)</span></a></li>
+                    <li class="<?= e(url_segment(1) == 'projects' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/projects')) ?>"><?= e($this->lang_php['projects']) ?></a></li>
+                    <li class="<?= e(url_segment(1) == 'profiles' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/profiles')) ?>"><?= e($this->lang_php['profiles']) ?></a></li>
+                    <li class="<?= e(url_segment(1) == 'syncing' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/syncing')) ?>"><?= e($this->lang_php['emails_syncing']) ?></a></li>
+                    <li class="<?= e(url_segment(1) == 'logs' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/logs')) ?>"><?= e($this->lang_php['logs']) ?></a></li>
                 </ul>
                 <ul class="nav nav-sidebar">
-                    <li class="<?= url_segment(1) == 'wiki_spaces' ? 'active' : '' ?>"><a href="<?= base_url('settings/wiki_spaces') ?>"><?= $this->lang_php['wiki_spaces'] ?></a></li>
-                    <li class="<?= url_segment(1) == 'wiki_templates' ? 'active' : '' ?>"><a href="<?= base_url('settings/wiki_templates') ?>"><?= $this->lang_php['wiki_templates'] ?></a></li>
+                    <li class="<?= e(url_segment(1) == 'wiki_spaces' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/wiki_spaces')) ?>"><?= e($this->lang_php['wiki_spaces']) ?></a></li>
+                    <li class="<?= e(url_segment(1) == 'wiki_templates' ? 'active' : '') ?>"><a href="<?= e(base_url('settings/wiki_templates')) ?>"><?= e($this->lang_php['wiki_templates']) ?></a></li>
                 </ul>
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -68,18 +68,18 @@ $projects_list = $this->getProjects();
                     $res_tickets = $this->getTicketStatistics($find);
 
                     if (!empty($res_tickets)) {
-                        $months_categories = "'" . implode("','", array_keys($res_tickets['months'])) . "'";
+                        $months_categories = implode(',', array_map('js', array_keys($res_tickets['months'])));
 
                         if ($res_tickets['num_created'] != null) {
                             $months_created = "";
                             foreach ($res_tickets['num_created'] as $p => $m) {
                                 $color[] = $m['color'];
                                 $months_created .= "{";
-                                $months_created .= "name: '$p',";
+                                $months_created .= "name: " . js($p) . ",";
                                 $months_created .= "data: [" . implode(', ', $m['nums']) . "]";
                                 $months_created .= "},";
                             }
-                            $colors = "'" . implode("', '", $color) . "'";
+                            $colors = implode(', ', array_map('js', $color));
                             $months_created = rtrim($months_created, ",");
                         }
 
@@ -88,11 +88,11 @@ $projects_list = $this->getProjects();
                             foreach ($res_tickets['num_closed'] as $p => $m) {
                                 $color_c[] = $m['color'];
                                 $months_closed .= "{";
-                                $months_closed .= "name: '$p',";
+                                $months_closed .= "name: " . js($p) . ",";
                                 $months_closed .= "data: [" . implode(', ', $m['nums']) . "]";
                                 $months_closed .= "},";
                             }
-                            $colors_c = "'" . implode("', '", $color_c) . "'";
+                            $colors_c = implode(', ', array_map('js', $color_c));
                             $months_closed = rtrim($months_closed, ",");
                         }
 
@@ -102,7 +102,7 @@ $projects_list = $this->getProjects();
                             $percent = $division * 100;
 
                             $percents_tickets .= "{";
-                            $percents_tickets .= "name: '$pr',";
+                            $percents_tickets .= "name: " . js($pr) . ",";
                             $percents_tickets .= "y: " . number_format($percent);
                             $percents_tickets .= "},";
                         }
@@ -112,12 +112,12 @@ $projects_list = $this->getProjects();
                     //WIKI
                     $res_wiki = $this->getWikiStatistics($find);
                     if (!empty($res_wiki)) {
-                        $months_categories_w = "'" . implode("','", array_keys($res_wiki['months'])) . "'";
+                        $months_categories_w = implode(',', array_map('js', array_keys($res_wiki['months'])));
                         if ($res_wiki['num_created'] != null) {
                             $months_created_w = "";
                             foreach ($res_wiki['num_created'] as $p_w => $m_w) {
                                 $months_created_w .= "{";
-                                $months_created_w .= "name: '$p_w',";
+                                $months_created_w .= "name: " . js($p_w) . ",";
                                 $months_created_w .= "data: [" . implode(', ', $m_w) . "]";
                                 $months_created_w .= "},";
                             }
@@ -129,12 +129,12 @@ $projects_list = $this->getProjects();
                     require 'templates/activitystream.php';
                     ?>
                     <div id="settings-overview">
-                        <h1><?= $this->lang_php['overview'] ?>:</h1>
+                        <h1><?= e($this->lang_php['overview']) ?>:</h1>
                         <hr>
-                        <link rel="stylesheet" href="<?= base_url('assets/css/bootstrap-datepicker.min.css') ?>">
+                        <link rel="stylesheet" href="<?= e(base_url('assets/css/bootstrap-datepicker.min.css')) ?>">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#settings-stat-tab" aria-controls="settings-stat-tab" role="tab" data-toggle="tab"><?= $this->lang_php['statistics'] ?></a></li>
-                            <li role="presentation"><a href="#settings-activ-tab" aria-controls="settings-activ-tab" role="tab" data-toggle="tab"><?= $this->lang_php['activity_log'] ?></a></li>
+                            <li role="presentation" class="active"><a href="#settings-stat-tab" aria-controls="settings-stat-tab" role="tab" data-toggle="tab"><?= e($this->lang_php['statistics']) ?></a></li>
+                            <li role="presentation"><a href="#settings-activ-tab" aria-controls="settings-activ-tab" role="tab" data-toggle="tab"><?= e($this->lang_php['activity_log']) ?></a></li>
                         </ul>
 
                         <div class="tab-content">
@@ -145,30 +145,30 @@ $projects_list = $this->getProjects();
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <select name="project" class="selectpicker form-control show-menu-arrow">
-                                                        <option value=""><?= $this->lang_php['all_projects'] ?></option>
+                                                        <option value=""><?= e($this->lang_php['all_projects']) ?></option>
                                                         <?php foreach ($projects_list as $proj) { ?>
-                                                            <option <?= isset($_GET['project']) && $_GET['project'] == $proj['id'] ? 'selected' : '' ?> value="<?= $proj['id'] ?>"><?= $proj['name'] ?></option>
+                                                            <option <?= e(isset($_GET['project']) && $_GET['project'] == $proj['id'] ? 'selected' : '') ?> value="<?= e($proj['id']) ?>"><?= e($proj['name']) ?></option>
                                                         <?php } ?>
                                                     </select>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <div class="input-group">
-                                                        <span id="from" class="input-group-addon"><?= $this->lang_php['from'] ?>:</span>
-                                                        <input class="form-control date-pick" type="text" aria-describedby="from" placeholder="<?= $this->lang_php['date'] ?>" value="<?= isset($_GET['from_date']) ? $_GET['from_date'] : '' ?>" name="from_date">
-                                                        <span id="to" class="input-group-addon"><?= $this->lang_php['to'] ?>:</span>
-                                                        <input class="form-control date-pick" type="text" aria-describedby="to" placeholder="<?= $this->lang_php['date'] ?>" value="<?= isset($_GET['to_date']) ? $_GET['to_date'] : '' ?>" name="to_date">
+                                                        <span id="from" class="input-group-addon"><?= e($this->lang_php['from']) ?>:</span>
+                                                        <input class="form-control date-pick" type="text" aria-describedby="from" placeholder="<?= e($this->lang_php['date']) ?>" value="<?= e(isset($_GET['from_date']) ? $_GET['from_date'] : '') ?>" name="from_date">
+                                                        <span id="to" class="input-group-addon"><?= e($this->lang_php['to']) ?>:</span>
+                                                        <input class="form-control date-pick" type="text" aria-describedby="to" placeholder="<?= e($this->lang_php['date']) ?>" value="<?= e(isset($_GET['to_date']) ? $_GET['to_date'] : '') ?>" name="to_date">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-xs-12">
-                                                    <input type="submit" class="btn btn-primary" value="<?= $this->lang_php['filter_it'] ?>" name="gofilter">
+                                                    <input type="submit" class="btn btn-primary" value="<?= e($this->lang_php['filter_it']) ?>" name="gofilter">
                                                 </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                <h1><?= $this->lang_php['statistics'] ?><sup><?= $this->lang_php['tickets'] ?></sup></h1>
+                                <h1><?= e($this->lang_php['statistics']) ?><sup><?= e($this->lang_php['tickets']) ?></sup></h1>
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <script>
@@ -317,7 +317,7 @@ $projects_list = $this->getProjects();
                                             <div id="monthly-created-tickets"></div>
                                             <hr>
                                         <?php } else { ?>
-                                            <div class="alert alert-info"><?= $this->lang_php['no_stat_for_tickets'] ?></div>
+                                            <div class="alert alert-info"><?= e($this->lang_php['no_stat_for_tickets']) ?></div>
                                             <?php
                                         }
                                         if (!empty($res_tickets) && $res_tickets['num_closed'] != null) {
@@ -358,7 +358,7 @@ $projects_list = $this->getProjects();
                                             <div id="monthly-closed-tickets"></div>
                                             <hr>
                                         <?php } else { ?>
-                                            <div class="alert alert-info"><?= $this->lang_php['no_stat_for_tickets_closed'] ?></div>
+                                            <div class="alert alert-info"><?= e($this->lang_php['no_stat_for_tickets_closed']) ?></div>
                                             <?php
                                         }
 
@@ -402,7 +402,7 @@ $projects_list = $this->getProjects();
                                         <?php } ?>
                                     </div>
                                 </div>
-                                <h1><?= $this->lang_php['statistics'] ?><sup><?= $this->lang_php['wiki'] ?></sup></h1>
+                                <h1><?= e($this->lang_php['statistics']) ?><sup><?= e($this->lang_php['wiki']) ?></sup></h1>
                                 <div class="row">
                                     <div class="col-xs-12">
                                         <?php
@@ -443,36 +443,36 @@ $projects_list = $this->getProjects();
                                             </script>
                                             <div id="monthly-created-pages"></div>
                                         <?php } else { ?>
-                                            <div class="alert alert-info"><?= $this->lang_php['no_stat_for_pages'] ?></div>
+                                            <div class="alert alert-info"><?= e($this->lang_php['no_stat_for_pages']) ?></div>
                                         <?php } ?>
                                     </div>
                                 </div>
                             </div>
 
                             <div role="tabpanel" class="tab-pane fade" id="settings-activ-tab">
-                                <h1><?= $this->lang_php['activity_log'] ?><sup><?= $this->lang_php['all'] ?></sup></h1>
+                                <h1><?= e($this->lang_php['activity_log']) ?><sup><?= e($this->lang_php['all']) ?></sup></h1>
                                 <div class="panel panel-info panel-activity">
-                                    <div class="panel-heading"><?= $this->lang_php['activity'] ?></div>
+                                    <div class="panel-heading"><?= e($this->lang_php['activity']) ?></div>
                                     <div class="panel-body">
                                         <?php
                                         if (!empty($theLog)) {
                                             activityForeach($theLog, 2);
                                             ?>
                                             <div id="w-ajax"></div>
-                                            <a href="javascript:void(0)" onClick="showMore(<?= $this->project_id ?>)" class="bordered text-center show-more"><?= $this->lang_php['show_more'] ?> <i class="fa fa-chevron-circle-down"></i></a>
+                                            <a href="javascript:void(0)" onClick="showMore(<?= e($this->project_id) ?>)" class="bordered text-center show-more"><?= e($this->lang_php['show_more']) ?> <i class="fa fa-chevron-circle-down"></i></a>
                                             <?php
                                         } else {
                                             ?>
-                                            <?= $this->lang_php['no_activity'] ?>
+                                            <?= e($this->lang_php['no_activity']) ?>
                                         <?php } ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <script src="<?= base_url('assets/js/bootstrap-datepicker.min.js') ?>"></script>
-                    <script src="<?= base_url('assets/js/highcharts/highcharts.js') ?>"></script>
-                    <script src="<?= base_url('assets/js/highcharts/modules/exporting.js') ?>"></script>
+                    <script src="<?= e(base_url('assets/js/bootstrap-datepicker.min.js')) ?>"></script>
+                    <script src="<?= e(base_url('assets/js/highcharts/highcharts.js')) ?>"></script>
+                    <script src="<?= e(base_url('assets/js/highcharts/modules/exporting.js')) ?>"></script>
                     <script>
                                                 if (window.location.hash == '#settings-activ-tab') {
                                                     alert();
@@ -542,24 +542,24 @@ $projects_list = $this->getProjects();
                     $currencies = $this->getCurrencies();
                     echo $this->get_alert();
                     ?>
-                    <h1><?= $this->lang_php['general'] ?>:</h1>
+                    <h1><?= e($this->lang_php['general']) ?>:</h1>
                     <hr>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="panel panel-default">
-                                <div class="panel-heading"><?= $this->lang_php['site_default_language'] ?></div>
+                                <div class="panel-heading"><?= e($this->lang_php['site_default_language']) ?></div>
                                 <div class="panel-body">
                                     <form method="post" action="">
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                                                 <select name="language" class="selectpicker form-control show-tick show-menu-arrow">
                                                     <?php foreach ($abbreviations as $abbreviature) { ?>
-                                                        <option <?= $abbreviature == $this->default_lang_abbr ? 'selected' : '' ?> value="<?= $abbreviature ?>"><?= $abbreviature ?></option>
+                                                        <option <?= e($abbreviature == $this->default_lang_abbr ? 'selected' : '') ?> value="<?= e($abbreviature) ?>"><?= e($abbreviature) ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
                                             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-                                                <input type="submit" name="setlanguage" class="btn btn-info" value="<?= $this->lang_php['save'] ?>">
+                                                <input type="submit" name="setlanguage" class="btn btn-info" value="<?= e($this->lang_php['save']) ?>">
                                             </div>
                                         </div>
                                     </form>
@@ -568,22 +568,22 @@ $projects_list = $this->getProjects();
                         </div>
                         <div class="col-sm-6">
                             <div class="panel panel-default">
-                                <div class="panel-heading"><?= $this->lang_php['login_image'] ?></div>
+                                <div class="panel-heading"><?= e($this->lang_php['login_image']) ?></div>
                                 <div class="panel-body">
                                     <form method="post" enctype="multipart/form-data" action="">
                                         <div class="col-xs-8">
                                             <div class="form-group">
-                                                <img class="profile-img" src="<?= $login_image != null ? base_url($GLOBALS['CONFIG']['IMAGELOGINUPLOADDIR'] . $login_image) : '' ?>" alt="no image" style="width:90px;">
-                                                <label class="col-sm-2 control-label"><?= $this->lang_php['image'] ?></label>
+                                                <img class="profile-img" src="<?= e($login_image != null ? base_url($GLOBALS['CONFIG']['IMAGELOGINUPLOADDIR'] . $login_image) : '') ?>" alt="no image" style="width:90px;">
+                                                <label class="col-sm-2 control-label"><?= e($this->lang_php['image']) ?></label>
                                                 <div class="col-sm-10">
                                                     <input type="file" name="image" id="fileToUpload">
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-xs-4">
-                                            <input type="submit" name="setloginimage" class="btn btn-info" value="<?= $this->lang_php['save'] ?>">
+                                            <input type="submit" name="setloginimage" class="btn btn-info" value="<?= e($this->lang_php['save']) ?>">
                                             <?php if ($login_image != null) { ?>
-                                                <a href="?removeLoginImage=true" class="btn btn-danger"><?= $this->lang_php['remove'] ?></a>
+                                                <a href="?removeLoginImage=true&amp;<?= e(csrf_param()) ?>" class="btn btn-danger"><?= e($this->lang_php['remove']) ?></a>
                                             <?php } ?>
                                         </div>
                                     </form>
@@ -592,19 +592,19 @@ $projects_list = $this->getProjects();
                         </div>
                         <div class="col-sm-6">
                             <div class="panel panel-default">
-                                <div class="panel-heading"><?= $this->lang_php['price_per_hour'] . '/' . $this->lang_php['default_currency'] ?></div>
+                                <div class="panel-heading"><?= e($this->lang_php['price_per_hour'] . '/' . $this->lang_php['default_currency']) ?></div>
                                 <div class="panel-body">
                                     <form method="post" action="">
                                         <div class="row">
                                             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
                                                 <select name="def_currency" class="selectpicker form-control show-tick show-menu-arrow">
                                                     <?php foreach ($currencies as $currencie) { ?>
-                                                        <option <?= $currencie['def'] == 1 ? 'selected' : '' ?> value="<?= $currencie['currency'] ?>"><?= $currencie['country'] ?></option>
+                                                        <option <?= e($currencie['def'] == 1 ? 'selected' : '') ?> value="<?= e($currencie['currency']) ?>"><?= e($currencie['country']) ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
                                             <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-                                                <input type="submit" name="setDefCurrency" class="btn btn-info" value="<?= $this->lang_php['save'] ?>">
+                                                <input type="submit" name="setDefCurrency" class="btn btn-info" value="<?= e($this->lang_php['save']) ?>">
                                             </div>
                                         </div>
                                     </form>
@@ -617,10 +617,10 @@ $projects_list = $this->getProjects();
                 if (url_segment(1) !== false && url_segment(1) == 'profiles') {
                     echo $this->get_alert();
                     ?>
-                    <h1><?= $this->lang_php['profiles'] ?>:</h1>
+                    <h1><?= e($this->lang_php['profiles']) ?>:</h1>
                     <hr>
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addUser">
-                        <?= $this->lang_php['add_user'] ?>
+                        <?= e($this->lang_php['add_user']) ?>
                     </button>
                     <div class="profiles-boxes">
                         <hr>
@@ -630,7 +630,7 @@ $projects_list = $this->getProjects();
                                     <div class="panel-body p-t-0">
                                         <form method="GET" action="">
                                             <div class="input-group">
-                                                <input type="text" id="example-input1-group2" value="<?= isset($_GET['find-user']) ? urldecode($_GET['find-user']) : '' ?>" name="find-user" class="form-control" placeholder="Search">
+                                                <input type="text" id="example-input1-group2" value="<?= e(isset($_GET['find-user']) ? urldecode($_GET['find-user']) : '') ?>" name="find-user" class="form-control" placeholder="Search">
                                                 <span class="input-group-btn">
                                                     <button type="submit" class="btn btn-effect-ripple btn-primary"><i class="fa fa-search"></i></button>
                                                 </span>
@@ -688,7 +688,7 @@ $projects_list = $this->getProjects();
                                 }
                             } else {
                                 ?>
-                                <h3><?= $this->lang_php['no_users_found'] ?> <?= isset($_GET['find-user']) && $_GET['find-user'] != '' ? $this->lang_php['with_name'] . ' <i>' . $_GET['find-user'] . '</i>!' : '!' ?></h3>
+                                <h3><?= e($this->lang_php['no_users_found']) ?> <?= e(isset($_GET['find-user']) && $_GET['find-user'] != '' ? $this->lang_php['with_name'] . ' <i>' . $_GET['find-user'] . '</i>!' : '!') ?></h3>
                             <?php } ?>
                         </div>
                         <?= paging('settings/profiles', $query_string, $num_results, $pg, RESULT_LIMIT_SETTINGS_PROFILES) ?>
@@ -699,40 +699,40 @@ $projects_list = $this->getProjects();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel"><?= $this->lang_php['add_profile'] ?></h4>
+                                    <h4 class="modal-title" id="myModalLabel"><?= e($this->lang_php['add_profile']) ?></h4>
                                 </div>
                                 <div class="modal-body">
                                     <form class="form-horizontal" id="user-add" role="form" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="update" value="0">
                                         <div class="alert alert-danger" id="reg-errors" style="display:none;"></div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['username'] ?> *</label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['username']) ?> *</label>
                                             <div class="col-sm-10">
                                                 <input class="form-control" name="username" type="text" value="">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['pass'] ?> *</label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['pass']) ?> *</label>
                                             <div class="col-sm-10">
                                                 <input class="form-control" id="pwd" name="password" type="text" value="">
-                                                <span><?= $this->lang_php['pass_strenght'] ?>:</span>
+                                                <span><?= e($this->lang_php['pass_strenght']) ?>:</span>
                                                 <div class="progress">
                                                     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
                                                     </div>
                                                 </div>
-                                                <button type="button" id="GeneratePwd" class="btn btn-default"><?= $this->lang_php['gen_pass'] ?></button> 
+                                                <button type="button" id="GeneratePwd" class="btn btn-default"><?= e($this->lang_php['gen_pass']) ?></button> 
                                                 <p id="demo"></p>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['full_name'] ?> *</label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['full_name']) ?> *</label>
                                             <div class="col-sm-10">
                                                 <input class="form-control" name="fullname" type="text" value="">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <img src="" alt="none" style="display:none;" id="cover">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['image'] ?></label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['image']) ?></label>
                                             <div class="col-sm-10">
                                                 <input type="file"  name="image" id="fileToUpload">
                                             </div>
@@ -768,99 +768,99 @@ $projects_list = $this->getProjects();
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['language'] ?></label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['language']) ?></label>
                                             <div class="col-sm-10">
                                                 <select name="lang" class="form-control" disabled>
                                                     <?php foreach ($abbreviations as $abbreviature) { ?>
-                                                        <option <?= $abbreviature == $this->default_lang_abbr ? 'selected' : '' ?> value="<?= $abbreviature ?>"><?= $abbreviature ?></option>
+                                                        <option <?= e($abbreviature == $this->default_lang_abbr ? 'selected' : '') ?> value="<?= e($abbreviature) ?>"><?= e($abbreviature) ?></option>
                                                     <?php } ?>
                                                 </select>
                                                 <div class="checkbox">
-                                                    <label><input type="checkbox" value="" id="default_lang" checked=""><?= $this->lang_php['use_site_default'] ?></label>
+                                                    <label><input type="checkbox" value="" id="default_lang" checked=""><?= e($this->lang_php['use_site_default']) ?></label>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['profession'] ?></label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['profession']) ?></label>
                                             <div class="col-sm-10">
                                                 <input type="hidden" value="0" name="new-prof">
                                                 <input class="form-control" id="add-new-prof-field" name="new-prof-name" style="display:none;" type="text" value="">
                                                 <select class="form-control" name="prof" id="prof-list">
                                                     <option value="0" selected="selected"></option>
                                                     <?php foreach ($professions as $prof) { ?>
-                                                        <option value="<?= $prof['id'] ?>"><?= $prof['name'] ?></option>
+                                                        <option value="<?= e($prof['id']) ?>"><?= e($prof['name']) ?></option>
                                                     <?php } ?>
                                                 </select>
-                                                <a href="javascript:void(0)" id="add-new-prof" class="btn btn-default"><?= $this->lang_php['add_new'] ?></a>
-                                                <a href="javascript:void(0)" id="close-prof-list" class="btn btn-default" style="display:none;"><?= $this->lang_php['show_professions_list'] ?></a>
+                                                <a href="javascript:void(0)" id="add-new-prof" class="btn btn-default"><?= e($this->lang_php['add_new']) ?></a>
+                                                <a href="javascript:void(0)" id="close-prof-list" class="btn btn-default" style="display:none;"><?= e($this->lang_php['show_professions_list']) ?></a>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['can_see_projects'] ?></label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['can_see_projects']) ?></label>
                                             <div class="col-sm-10">
-                                                <label class="checkbox-inline"><input type="checkbox" id="select-all-projs" /><?= $this->lang_php['select_all'] ?></label>
+                                                <label class="checkbox-inline"><input type="checkbox" id="select-all-projs" /><?= e($this->lang_php['select_all']) ?></label>
                                                 <?php foreach ($projects_list as $proj) { ?>
-                                                    <label class="checkbox-inline"><input type="checkbox" class="proj-checkbox" name="can_see_proj[]" value="<?= $proj['id'] ?>"><?= $proj['name'] ?></label>
+                                                    <label class="checkbox-inline"><input type="checkbox" class="proj-checkbox" name="can_see_proj[]" value="<?= e($proj['id']) ?>"><?= e($proj['name']) ?></label>
                                                 <?php } ?>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-2 control-label"><?= $this->lang_php['user_type'] ?></label>
+                                            <label class="col-sm-2 control-label"><?= e($this->lang_php['user_type']) ?></label>
                                             <div class="col-sm-10">
                                                 <input type="hidden" value="0" name="costom-privileges">
                                                 <select class="form-control" name="default-priv" id="privileges">
                                                     <?php foreach ($GLOBALS['CONFIG']['DEFAULT_USER_TYPES'] as $ukey => $utype) { ?>
-                                                        <option <?= $ukey == 'User' ? 'selected' : '' ?> value="<?= $utype ?>"><?= $ukey ?></option>
+                                                        <option <?= e($ukey == 'User' ? 'selected' : '') ?> value="<?= e($utype) ?>"><?= e($ukey) ?></option>
                                                     <?php } ?>
                                                 </select>
                                                 <div id="privileges-types" style="display:none;">
-                                                    <p><b><?= $this->lang_php['general'] ?></b></p>
+                                                    <p><b><?= e($this->lang_php['general']) ?></b></p>
                                                     <?php
                                                     foreach ($GLOBALS['CONFIG']['PERMISSIONS'] as $pkey => $pval) {
                                                         if (!is_array($pval)) {
                                                             ?>
-                                                            <label class="checkbox-inline"><input type="checkbox" class="usrtype-checkbox" name="custom-priv[]" value="<?= $pval ?>" /><?= $pkey ?></label>
+                                                            <label class="checkbox-inline"><input type="checkbox" class="usrtype-checkbox" name="custom-priv[]" value="<?= e($pval) ?>" /><?= e($pkey) ?></label>
                                                             <?php
                                                         }
                                                     }
                                                     ?>
-                                                    <p><b><?= $this->lang_php['tickets'] ?></b></p>
+                                                    <p><b><?= e($this->lang_php['tickets']) ?></b></p>
                                                     <?php
                                                     foreach ($GLOBALS['CONFIG']['PERMISSIONS']['TICKETS'] as $pkey => $pval) {
                                                         if (!is_array($pval)) {
                                                             ?>
-                                                            <label class="checkbox-inline"><input type="checkbox" class="usrtype-checkbox" name="custom-priv[]" value="<?= $pval ?>" /><?= $pkey ?></label>
+                                                            <label class="checkbox-inline"><input type="checkbox" class="usrtype-checkbox" name="custom-priv[]" value="<?= e($pval) ?>" /><?= e($pkey) ?></label>
                                                             <?php
                                                         }
                                                     }
                                                     ?>
-                                                    <p><b><?= $this->lang_php['wiki'] ?></b></p>
+                                                    <p><b><?= e($this->lang_php['wiki']) ?></b></p>
                                                     <?php
                                                     foreach ($GLOBALS['CONFIG']['PERMISSIONS']['WIKI'] as $pkey => $pval) {
                                                         if (!is_array($pval)) {
                                                             ?>
-                                                            <label class="checkbox-inline"><input type="checkbox" class="usrtype-checkbox" name="custom-priv[]" value="<?= $pval ?>" /><?= $pkey ?></label>
+                                                            <label class="checkbox-inline"><input type="checkbox" class="usrtype-checkbox" name="custom-priv[]" value="<?= e($pval) ?>" /><?= e($pkey) ?></label>
                                                             <?php
                                                         }
                                                     }
                                                     ?>
                                                 </div>
-                                                <a href="javascript:void(0)" id="custom-privileges" class="btn btn-default"><?= $this->lang_php['custom_privileges'] ?></a>
-                                                <a href="javascript:void(0)" id="custom-privileges-cancel" style="display:none;" class="btn btn-default"><?= $this->lang_php['default_privileges'] ?></a>
+                                                <a href="javascript:void(0)" id="custom-privileges" class="btn btn-default"><?= e($this->lang_php['custom_privileges']) ?></a>
+                                                <a href="javascript:void(0)" id="custom-privileges-cancel" style="display:none;" class="btn btn-default"><?= e($this->lang_php['default_privileges']) ?></a>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->lang_php['close'] ?></button>
-                                    <button type="button" onclick="validateForm()" class="btn btn-primary"><?= $this->lang_php['save'] ?></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= e($this->lang_php['close']) ?></button>
+                                    <button type="button" onclick="validateForm()" class="btn btn-primary"><?= e($this->lang_php['save']) ?></button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <script type="text/javascript" src="<?= base_url('assets/js/zxcvbn.js') ?>"></script>
-                    <script type="text/javascript" src="<?= base_url('assets/js/zxcvbn_bootstrap3.js') ?>"></script>
-                    <script type="text/javascript" src="<?= base_url('assets/js/pGenerator.jquery.js') ?>"></script>
+                    <script type="text/javascript" src="<?= e(base_url('assets/js/zxcvbn.js')) ?>"></script>
+                    <script type="text/javascript" src="<?= e(base_url('assets/js/zxcvbn_bootstrap3.js')) ?>"></script>
+                    <script type="text/javascript" src="<?= e(base_url('assets/js/pGenerator.jquery.js')) ?>"></script>
                     <script>
                                         $(document).ready(function () {
                                             //PassStrength 
@@ -924,7 +924,7 @@ $projects_list = $this->getProjects();
                                             $.ajax({
                                                 type: "POST",
                                                 async: false,
-                                                url: "<?= base_url('getuserinfo') ?>",
+                                                url: <?= js(base_url('getuserinfo')) ?>,
                                                 data: {uname: name}
                                             }).done(function (data) {
                                                 if (data == 1) {
@@ -991,7 +991,7 @@ $projects_list = $this->getProjects();
                                         function editUser(id) {
                                             $.ajax({
                                                 type: "POST",
-                                                url: "<?= base_url('getuserinfo') ?>",
+                                                url: <?= js(base_url('getuserinfo')) ?>,
                                                 data: {uid: id}
                                             }).done(function (data) {
                                                 var info = JSON.parse(data);
@@ -1003,7 +1003,7 @@ $projects_list = $this->getProjects();
                                                 $("[name='username']").prop('disabled', true);
                                                 $("#GeneratePwd").text(lang.generate_new_pass);
                                                 $("[name='fullname']").val(info.fullname);
-                                                $("#cover").attr('src', '<?= base_url() . $GLOBALS['CONFIG']['IMAGESUSERSUPLOADDIR'] ?>' + info.image);
+                                                $("#cover").attr('src', <?= js(base_url() . $GLOBALS['CONFIG']['IMAGESUSERSUPLOADDIR']) ?> + info.image);
                                                 $("#cover").show();
                                                 $("[name='facebook']").val(info.social.facebook);
                                                 $("[name='twitter']").val(info.social.twitter);
@@ -1051,10 +1051,10 @@ $projects_list = $this->getProjects();
                     $projects = $this->getProjects(null, true);
                     $sync_connections = $this->getSyncInfo();
                     ?>
-                    <h1><?= $this->lang_php['projects'] ?>:</h1>
+                    <h1><?= e($this->lang_php['projects']) ?>:</h1>
                     <hr>
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#createModal">
-                        <?= $this->lang_php['add_project'] ?>
+                        <?= e($this->lang_php['add_project']) ?>
                     </button>
                     <hr>
                     <div id="result-ajax"></div>
@@ -1063,44 +1063,44 @@ $projects_list = $this->getProjects();
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th><?= $this->lang_php['abbrevation'] ?></th>
-                                        <th><?= $this->lang_php['project_name'] ?></th>
-                                        <th><?= $this->lang_php['sync_email_account'] ?></th>
-                                        <th><?= $this->lang_php['time_created'] ?></th>
-                                        <th><?= $this->lang_php['num_of_tickets'] ?></th>
-                                        <th><?= $this->lang_php['users'] ?></th>
-                                        <th><?= $this->lang_php['activity_log_tickets'] ?></th>
-                                        <th class="text-center"><?= $this->lang_php['remove'] ?></th>
+                                        <th><?= e($this->lang_php['abbrevation']) ?></th>
+                                        <th><?= e($this->lang_php['project_name']) ?></th>
+                                        <th><?= e($this->lang_php['sync_email_account']) ?></th>
+                                        <th><?= e($this->lang_php['time_created']) ?></th>
+                                        <th><?= e($this->lang_php['num_of_tickets']) ?></th>
+                                        <th><?= e($this->lang_php['users']) ?></th>
+                                        <th><?= e($this->lang_php['activity_log_tickets']) ?></th>
+                                        <th class="text-center"><?= e($this->lang_php['remove']) ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($projects as $proj) { ?>
                                         <tr>
                                             <td>
-                                                <span class="the-abbr-<?= $proj['id'] ?>"><?= $proj['abbr'] ?></span>
-                                                <input type="text" value="<?= $proj['abbr'] ?>" class="input-abbr-<?= $proj['id'] ?>" style="display:none;"> 
-                                                <a href="javascript:void(0);" id="edit-abbr-<?= $proj['id'] ?>" onclick="editAbbr(<?= $proj['id'] ?>)" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
-                                                <a href="javascript:void(0);" style="display:none;" id="save-edit-abbr-<?= $proj['id'] ?>" onclick="saveEditAbbr(<?= $proj['id'] ?>)" class="pull-right"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                                <span class="the-abbr-<?= e($proj['id']) ?>"><?= e($proj['abbr']) ?></span>
+                                                <input type="text" value="<?= e($proj['abbr']) ?>" class="input-abbr-<?= e($proj['id']) ?>" style="display:none;"> 
+                                                <a href="javascript:void(0);" id="edit-abbr-<?= e($proj['id']) ?>" onclick="editAbbr(<?= ejs($proj['id']) ?>)" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                <a href="javascript:void(0);" style="display:none;" id="save-edit-abbr-<?= e($proj['id']) ?>" onclick="saveEditAbbr(<?= ejs($proj['id']) ?>)" class="pull-right"><span class="glyphicon glyphicon-floppy-disk"></span></a>
                                             </td>
                                             <td>
-                                                <span class="the-name-<?= $proj['id'] ?>"><?= $proj['name'] ?></span>
-                                                <input type="text" value="<?= $proj['name'] ?>" class="input-name-<?= $proj['id'] ?>" style="display:none;"> 
-                                                <a href="javascript:void(0);" id="edit-name-<?= $proj['id'] ?>" onclick="editName(<?= $proj['id'] ?>)" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
-                                                <a href="javascript:void(0);" style="display:none;" id="save-edit-name-<?= $proj['id'] ?>" onclick="saveEditName(<?= $proj['id'] ?>)" class="pull-right"><span class="glyphicon glyphicon-floppy-disk"></span></a>
+                                                <span class="the-name-<?= e($proj['id']) ?>"><?= e($proj['name']) ?></span>
+                                                <input type="text" value="<?= e($proj['name']) ?>" class="input-name-<?= e($proj['id']) ?>" style="display:none;"> 
+                                                <a href="javascript:void(0);" id="edit-name-<?= e($proj['id']) ?>" onclick="editName(<?= ejs($proj['id']) ?>)" class="pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+                                                <a href="javascript:void(0);" style="display:none;" id="save-edit-name-<?= e($proj['id']) ?>" onclick="saveEditName(<?= ejs($proj['id']) ?>)" class="pull-right"><span class="glyphicon glyphicon-floppy-disk"></span></a>
                                             </td>
                                             <td>
-                                                <select class="form-control" data-change="<?= $proj['id'] ?>" onchange="editSync(<?= $proj['id'] ?>)">
+                                                <select class="form-control" data-change="<?= e($proj['id']) ?>" onchange="editSync(<?= ejs($proj['id']) ?>)">
                                                     <option value="0">none</option>
                                                     <?php foreach ($sync_connections as $conn) { ?>
-                                                        <option <?= $conn['id'] == $proj['sync'] ? 'selected' : '' ?> value="<?= $conn['id'] ?>"><?= $conn['hostname'] ?> - <?= $conn['username'] ?></option>
+                                                        <option <?= e($conn['id'] == $proj['sync'] ? 'selected' : '') ?> value="<?= e($conn['id']) ?>"><?= e($conn['hostname']) ?> - <?= e($conn['username']) ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </td>
-                                            <td><?= date(PROJECTS_TIME_CREATED, $proj['timestamp']) ?></td>
-                                            <td><a href="<?= base_url('tickets/' . $proj['name'] . '/dashboard') ?>"><?= $this->lang_php['open_dash'] ?> (<?= $proj['num_tickets'] < MAX_NUM_NOTIF ? $proj['num_tickets'] : MAX_NUM_IN_BRECKETS . '+' ?>)</a></td>
-                                            <td><a href="<?= base_url('settings/profiles?for_proj=' . $proj['id']) ?>"><?= $this->lang_php['see_list'] ?> (<?= $proj['num_users'] < MAX_NUM_NOTIF ? $proj['num_users'] : MAX_NUM_IN_BRECKETS . '+' ?>)</a></td>
-                                            <td><a href="<?= base_url('settings#settings-activ-tab') ?>"><?= $this->lang_php['see_activity_log'] ?> (<?= $proj['num_logs_tickets'] < MAX_NUM_NOTIF ? $proj['num_logs_tickets'] : MAX_NUM_IN_BRECKETS . '+' ?>)</a></td>
-                                            <td class="bg-danger text-center"><a href="<?= base_url('settings/projects?delete_project=' . $proj['id']) ?>" onclick="return confirm('<?= $this->lang_php['deleting_project'] ?>')"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                            <td><?= e(date(PROJECTS_TIME_CREATED, $proj['timestamp'])) ?></td>
+                                            <td><a href="<?= e(base_url('tickets/' . $proj['name'] . '/dashboard')) ?>"><?= e($this->lang_php['open_dash']) ?> (<?= e($proj['num_tickets'] < MAX_NUM_NOTIF ? $proj['num_tickets'] : MAX_NUM_IN_BRECKETS . '+') ?>)</a></td>
+                                            <td><a href="<?= e(base_url('settings/profiles?for_proj=' . $proj['id'])) ?>"><?= e($this->lang_php['see_list']) ?> (<?= e($proj['num_users'] < MAX_NUM_NOTIF ? $proj['num_users'] : MAX_NUM_IN_BRECKETS . '+') ?>)</a></td>
+                                            <td><a href="<?= e(base_url('settings#settings-activ-tab')) ?>"><?= e($this->lang_php['see_activity_log']) ?> (<?= e($proj['num_logs_tickets'] < MAX_NUM_NOTIF ? $proj['num_logs_tickets'] : MAX_NUM_IN_BRECKETS . '+') ?>)</a></td>
+                                            <td class="bg-danger text-center"><a href="<?= e(base_url('settings/projects?delete_project=' . $proj['id'] . '&' . csrf_param())) ?>" onclick="return confirm(<?= ejs($this->lang_php['deleting_project']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -1108,7 +1108,7 @@ $projects_list = $this->getProjects();
                         </div>
                     <?php } else {
                         ?>
-                        <div class="alert alert-danger"><?= $this->lang_php['no_projects'] ?></div>
+                        <div class="alert alert-danger"><?= e($this->lang_php['no_projects']) ?></div>
                         <?php
                     }
                     ?>
@@ -1118,28 +1118,28 @@ $projects_list = $this->getProjects();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel"><?= $this->lang_php['add_new_project'] ?></h4>
+                                    <h4 class="modal-title" id="myModalLabel"><?= e($this->lang_php['add_new_project']) ?></h4>
                                 </div>
                                 <div class="modal-body">
                                     <div id="result"></div>
                                     <input type="hidden" value="0" name="update">
                                     <div class="form-group">
-                                        <label for="title"><?= $this->lang_php['name'] ?>:</label>
-                                        <input type="text" class="form-control" name="title" placeholder="<?= $this->lang_php['name_regex'] ?>" value="" id="name">
+                                        <label for="title"><?= e($this->lang_php['name']) ?>:</label>
+                                        <input type="text" class="form-control" name="title" placeholder="<?= e($this->lang_php['name_regex']) ?>" value="" id="name">
                                     </div>
                                     <div class="form-group">
-                                        <label for="abbr"><?= $this->lang_php['abbrevation'] ?>:</label>
-                                        <input type="text" class="form-control" name="abbr" placeholder="<?= $this->lang_php['abbrevation_regex'] ?>" maxlength="3" value="" id="abbr">
+                                        <label for="abbr"><?= e($this->lang_php['abbrevation']) ?>:</label>
+                                        <input type="text" class="form-control" name="abbr" placeholder="<?= e($this->lang_php['abbrevation_regex']) ?>" maxlength="3" value="" id="abbr">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->lang_php['close'] ?></button>
-                                    <button type="button" class="btn btn-primary" onclick="setProject('../add_project')"><?= $this->lang_php['create'] ?></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= e($this->lang_php['close']) ?></button>
+                                    <button type="button" class="btn btn-primary" onclick="setProject('../add_project')"><?= e($this->lang_php['create']) ?></button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <script src="<?= base_url('assets/js/project_add.js') ?>"></script>
+                    <script src="<?= e(base_url('assets/js/project_add.js')) ?>"></script>
                     <script>
                                         function editAbbr(id) {
                                             $(".the-abbr-" + id + ", #edit-abbr-" + id).hide();
@@ -1186,7 +1186,7 @@ $projects_list = $this->getProjects();
                                             $.ajax({
                                                 type: "POST",
                                                 async: false,
-                                                url: "<?= base_url('add_project') ?>",
+                                                url: <?= js(base_url('add_project')) ?>,
                                                 data: {name: name, abbr: abbr, sync_to: sync_to, update: id}
                                             }).done(function (result) {
                                                 $("#loading").hide();
@@ -1236,18 +1236,18 @@ $projects_list = $this->getProjects();
                     $spaces = $this->getSpaces(null, null, $from, RESULT_LIMIT_SETTINGS_SPACES, $search);
                     echo $this->get_alert();
                     ?>
-                    <h1><?= $this->lang_php['wiki_spaces'] ?>:</h1>
+                    <h1><?= e($this->lang_php['wiki_spaces']) ?>:</h1>
                     <hr>
                     <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#addSpace">
-                        <?= $this->lang_php['add_space'] ?>
+                        <?= e($this->lang_php['add_space']) ?>
                     </button>
                     <hr>
                     <form method="GET" id="goSelect" action="">
                         <select name="project-filter" data-style="btn-primary" class="selectpicker show-tick show-menu-arrow" id="filter_space" title="Filter by project">
-                            <option value=""><?= $this->lang_php['none'] ?></option>
+                            <option value=""><?= e($this->lang_php['none']) ?></option>
                             <option data-divider="true"></option>
                             <?php foreach ($projects_list as $proj) { ?>
-                                <option <?= isset($_GET['project-filter']) && $_GET['project-filter'] == $proj['id'] ? 'selected' : '' ?> value="<?= $proj['id'] ?>"><?= $proj['name'] ?></option>
+                                <option <?= e(isset($_GET['project-filter']) && $_GET['project-filter'] == $proj['id'] ? 'selected' : '') ?> value="<?= e($proj['id']) ?>"><?= e($proj['name']) ?></option>
                             <?php } ?>
                         </select>
                     </form>
@@ -1257,39 +1257,39 @@ $projects_list = $this->getProjects();
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th><?= $this->lang_php['name'] ?></th>
-                                    <th><?= $this->lang_php['space_key'] ?></th>
-                                    <th><?= $this->lang_php['description'] ?></th>
-                                    <th><?= $this->lang_php['image'] ?></th>
-                                    <th><?= $this->lang_php['pages'] ?></th>
-                                    <th><?= $this->lang_php['project'] ?></th>
-                                    <th><?= $this->lang_php['time_created'] ?></th>
-                                    <th class="text-center"><?= $this->lang_php['edit'] ?></th>
-                                    <th class="text-center"><?= $this->lang_php['remove'] ?></th>
+                                    <th><?= e($this->lang_php['name']) ?></th>
+                                    <th><?= e($this->lang_php['space_key']) ?></th>
+                                    <th><?= e($this->lang_php['description']) ?></th>
+                                    <th><?= e($this->lang_php['image']) ?></th>
+                                    <th><?= e($this->lang_php['pages']) ?></th>
+                                    <th><?= e($this->lang_php['project']) ?></th>
+                                    <th><?= e($this->lang_php['time_created']) ?></th>
+                                    <th class="text-center"><?= e($this->lang_php['edit']) ?></th>
+                                    <th class="text-center"><?= e($this->lang_php['remove']) ?></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($spaces as $space) { ?>
                                     <tr>
                                         <td>
-                                            <?= $space['name'] ?>
+                                            <?= e($space['name']) ?>
                                         </td>
                                         <td>
-                                            <?= $space['key_space'] ?>
+                                            <?= e($space['key_space']) ?>
                                         </td>
                                         <td>
-                                            <?= word_limiter($space['description'], 400) ?>
+                                            <?= clean_html(word_limiter($space['description'], 400)) ?>
                                         </td>
                                         <td>
-                                            <img class="space-logo-img" src="<?= base_url(returnSpaceImageUrl($space['image'])) ?>">
+                                            <img class="space-logo-img" src="<?= e(base_url(returnSpaceImageUrl($space['image']))) ?>">
                                         </td>
                                         <td>
-                                            <a href="<?= base_url('wiki/' . $space['proj_name'] . '/display/' . $space['key_space']) ?>"><?= $space['num_pages'] ?></a>
+                                            <a href="<?= e(base_url('wiki/' . $space['proj_name'] . '/display/' . $space['key_space'])) ?>"><?= e($space['num_pages']) ?></a>
                                         </td>
-                                        <td><?= $space['proj_name'] ?></td>
-                                        <td><?= date(SPACES_TIME_CREATED, $space['timestamp']) ?></td>
-                                        <td class="bg-info text-center"><a href="javascript:void(0)" onclick="editSpace(<?= $space['id'] ?>)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                        <td class="bg-danger text-center"><a href="<?= base_url('settings/wiki_spaces?delete_space=' . $space['id']) ?>" onclick="return confirm('<?= $this->lang_php['space_deleting'] ?>')"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                        <td><?= e($space['proj_name']) ?></td>
+                                        <td><?= e(date(SPACES_TIME_CREATED, $space['timestamp'])) ?></td>
+                                        <td class="bg-info text-center"><a href="javascript:void(0)" onclick="editSpace(<?= ejs($space['id']) ?>)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                        <td class="bg-danger text-center"><a href="<?= e(base_url('settings/wiki_spaces?delete_space=' . $space['id'] . '&' . csrf_param())) ?>" onclick="return confirm(<?= ejs($this->lang_php['space_deleting']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -1311,49 +1311,49 @@ $projects_list = $this->getProjects();
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel"><?= $this->lang_php['add_new_space'] ?></h4>
+                                        <h4 class="modal-title" id="myModalLabel"><?= e($this->lang_php['add_new_space']) ?></h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="alert alert-danger" id="sp-result"></div>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <label class="control-label" for="name"><?= $this->lang_php['name'] ?> *</label>
+                                                <label class="control-label" for="name"><?= e($this->lang_php['name']) ?> *</label>
                                                 <input type="text" class="form-control" id="name" value="" name="name">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <label class="control-label" for="sp_key"><?= $this->lang_php['space_key'] ?> *</label>
+                                                <label class="control-label" for="sp_key"><?= e($this->lang_php['space_key']) ?> *</label>
                                                 <input type="text" class="form-control" id="sp_key" value="" name="key_space">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <label class="control-label" for="description"><?= $this->lang_php['description'] ?></label>
+                                                <label class="control-label" for="description"><?= e($this->lang_php['description']) ?></label>
                                                 <textarea name="description" id="description" rows="50" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <img src="" alt="none" style="display:none;" id="sp-cover">
                                             <div class="col-xs-12">
-                                                <label class="control-label"><?= $this->lang_php['image'] ?></label>
+                                                <label class="control-label"><?= e($this->lang_php['image']) ?></label>
                                                 <input type="file"  name="image" id="fileToUpload">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <label class="control-label"><?= $this->lang_php['select_project'] ?>:</label>
+                                                <label class="control-label"><?= e($this->lang_php['select_project']) ?>:</label>
                                                 <select name="project_id" class="form-control">
                                                     <?php foreach ($projects_list as $proj) { ?>
-                                                        <option value="<?= $proj['id'] ?>"><?= $proj['name'] ?></option>
+                                                        <option value="<?= e($proj['id']) ?>"><?= e($proj['name']) ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->lang_php['close'] ?></button>
-                                        <button type="button" class="btn btn-primary" name="setspace" onclick="validateSpace()"><?= $this->lang_php['create'] ?></button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= e($this->lang_php['close']) ?></button>
+                                        <button type="button" class="btn btn-primary" name="setspace" onclick="validateSpace()"><?= e($this->lang_php['create']) ?></button>
                                     </div>
                                 </div>
                             </form>
@@ -1379,7 +1379,7 @@ $projects_list = $this->getProjects();
                                     $.ajax({
                                         type: "POST",
                                         async: false,
-                                        url: "<?= base_url('space_key_check') ?>",
+                                        url: <?= js(base_url('space_key_check')) ?>,
                                         data: {space_key: jQuery.trim(space_key)}
                                     }).done(function (data) {
                                         if (data > 0) {
@@ -1409,7 +1409,7 @@ $projects_list = $this->getProjects();
                         function editSpace(id) {
                             $.ajax({
                                 type: "POST",
-                                url: "<?= base_url('getspaceinfo') ?>",
+                                url: <?= js(base_url('getspaceinfo')) ?>,
                                 data: {sid: id}
                             }).done(function (data) {
                                 var info = JSON.parse(data);
@@ -1418,7 +1418,7 @@ $projects_list = $this->getProjects();
                                 $("#sp_key").prop('disabled', true);
                                 $('[name="update"]').val(info.id);
                                 $("#description").val(info.description);
-                                $("#sp-cover").attr('src', '<?= base_url() . $GLOBALS['CONFIG']['IMAGESSPACESUPLOADDIR'] ?>' + info.image).show();
+                                $("#sp-cover").attr('src', <?= js(base_url() . $GLOBALS['CONFIG']['IMAGESSPACESUPLOADDIR']) ?> + info.image).show();
                                 $('[name="project_id"] option').filter(function () {
                                     if ($(this).text() == info.proj_name) {
                                         return true;
@@ -1457,9 +1457,9 @@ $projects_list = $this->getProjects();
                     $templates = $this->getPageTemplates(1);
                     echo $this->get_alert();
                     ?>
-                    <h1><?= $this->lang_php['wiki_templates'] ?>:</h1>
+                    <h1><?= e($this->lang_php['wiki_templates']) ?>:</h1>
                     <hr>
-                    <button class="btn btn-primary btn-lg" data-target="#addTemplate" data-toggle="modal" type="button"> <?= $this->lang_php['add_template'] ?> </button>
+                    <button class="btn btn-primary btn-lg" data-target="#addTemplate" data-toggle="modal" type="button"> <?= e($this->lang_php['add_template']) ?> </button>
                     <hr>
                     <?php if (!empty($templates)) { ?>
                         <div class="table-responsive">
@@ -1467,27 +1467,27 @@ $projects_list = $this->getProjects();
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th><?= $this->lang_php['name'] ?></th>
-                                        <th><?= $this->lang_php['content'] ?></th>
-                                        <th><?= $this->lang_php['edit'] ?></th>
-                                        <th><?= $this->lang_php['delete'] ?></th>
+                                        <th><?= e($this->lang_php['name']) ?></th>
+                                        <th><?= e($this->lang_php['content']) ?></th>
+                                        <th><?= e($this->lang_php['edit']) ?></th>
+                                        <th><?= e($this->lang_php['delete']) ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php foreach ($templates as $tmpl) { ?>
                                         <tr>
-                                            <td><?= $tmpl['id'] ?></td>
-                                            <td><?= $tmpl['name'] ?></td>
-                                            <td><?= word_limiter(htmlspecialchars($tmpl['content']), 100) ?></td>
-                                            <td class="bg-info text-center"><a href="javascript:void(0)" onclick="editTemplate(<?= $tmpl['id'] ?>)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                            <td class="bg-danger text-center"><a href="<?= base_url('settings/wiki_templates?delete_tmpl=' . $tmpl['id']) ?>" onclick="return confirm('<?= $this->lang_php['delete_confirm'] ?>')"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                            <td><?= e($tmpl['id']) ?></td>
+                                            <td><?= e($tmpl['name']) ?></td>
+                                            <td><?= e(word_limiter(htmlspecialchars($tmpl['content']), 100)) ?></td>
+                                            <td class="bg-info text-center"><a href="javascript:void(0)" onclick="editTemplate(<?= ejs($tmpl['id']) ?>)"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                            <td class="bg-danger text-center"><a href="<?= e(base_url('settings/wiki_templates?delete_tmpl=' . $tmpl['id'] . '&' . csrf_param())) ?>" onclick="return confirm(<?= ejs($this->lang_php['delete_confirm']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
                             </table>
                         </div>
                     <?php } else { ?>
-                        <div class="alert alert-danger"><?= $this->lang_php['no_custom_templates'] ?>!</div>             
+                        <div class="alert alert-danger"><?= e($this->lang_php['no_custom_templates']) ?>!</div>             
                     <?php } ?>
 
                     <!-- Modal -->
@@ -1498,26 +1498,26 @@ $projects_list = $this->getProjects();
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title" id="myModalLabel"><?= $this->lang_php['add_edit_templates'] ?></h4>
+                                        <h4 class="modal-title" id="myModalLabel"><?= e($this->lang_php['add_edit_templates']) ?></h4>
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <label class="control-label" for="name"><?= $this->lang_php['name'] ?> *</label>
+                                                <label class="control-label" for="name"><?= e($this->lang_php['name']) ?> *</label>
                                                 <input type="text" class="form-control" id="name" value="" name="name">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="col-xs-12">
-                                                <label class="control-label" for="description"><?= $this->lang_php['description'] ?></label>
+                                                <label class="control-label" for="description"><?= e($this->lang_php['description']) ?></label>
                                                 <textarea name="description" id="description" rows="50" class="form-control"></textarea>
                                             </div>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->lang_php['close'] ?></button>
-                                        <input type="submit" class="btn btn-primary" value="<?= $this->lang_php['save'] ?>" name="addtempl">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"><?= e($this->lang_php['close']) ?></button>
+                                        <input type="submit" class="btn btn-primary" value="<?= e($this->lang_php['save']) ?>" name="addtempl">
                                     </div>
 
                                 </div>
@@ -1542,7 +1542,7 @@ $projects_list = $this->getProjects();
                         function editTemplate(id) {
                             $.ajax({
                                 type: "POST",
-                                url: "<?= base_url('gettemplateinfo') ?>",
+                                url: <?= js(base_url('gettemplateinfo')) ?>,
                                 data: {tid: id}
                             }).done(function (data) {
                                 var info = JSON.parse(data);
@@ -1582,17 +1582,17 @@ $projects_list = $this->getProjects();
                     }
                     echo $this->get_alert();
                     ?>
-                    <script src="<?= base_url('assets/js/function.setPort.js') ?>"></script>
-                    <h1><?= $this->lang_php['emails_syncing'] ?>:</h1>
+                    <script src="<?= e(base_url('assets/js/function.setPort.js')) ?>"></script>
+                    <h1><?= e($this->lang_php['emails_syncing']) ?>:</h1>
                     <hr>
                     <div class="panel panel-default panel-table">
                         <div class="panel-heading">
                             <div class="row">
                                 <div class="col col-xs-6">
-                                    <h3 class="panel-title"><?= $this->lang_php['email_boxes'] ?></h3>
+                                    <h3 class="panel-title"><?= e($this->lang_php['email_boxes']) ?></h3>
                                 </div>
                                 <div class="col col-xs-6 text-right">
-                                    <button type="button"  data-toggle="modal" data-target="#myModalCreateSync" class="btn btn-sm btn-primary btn-create"><?= $this->lang_php['create'] ?></button>
+                                    <button type="button"  data-toggle="modal" data-target="#myModalCreateSync" class="btn btn-sm btn-primary btn-create"><?= e($this->lang_php['create']) ?></button>
                                 </div>
                             </div>
                         </div>
@@ -1603,17 +1603,17 @@ $projects_list = $this->getProjects();
                                         <tr>
                                             <th><em class="fa fa-cog"></em></th>
                                             <th class="hidden-xs">ID</th>
-                                            <th><?= $this->lang_php['hostname'] ?>(imap/pop3)</th>
-                                            <th><?= $this->lang_php['hostname'] ?>(smtp)</th>
-                                            <th><?= $this->lang_php['protocol'] ?></th>
-                                            <th><?= $this->lang_php['port'] ?>(imap/pop3)</th>
-                                            <th><?= $this->lang_php['port'] ?>(smtp)</th>
-                                            <th><?= $this->lang_php['ssl'] ?>(imap/pop3)</th>
-                                            <th><?= $this->lang_php['ssl'] ?>(smtp)</th>
-                                            <th><?= $this->lang_php['self_signed_cert'] ?></th>
-                                            <th><?= $this->lang_php['folder'] ?></th>
-                                            <th><?= $this->lang_php['username'] ?></th>
-                                            <th><?= $this->lang_php['pass'] ?></th>
+                                            <th><?= e($this->lang_php['hostname']) ?>(imap/pop3)</th>
+                                            <th><?= e($this->lang_php['hostname']) ?>(smtp)</th>
+                                            <th><?= e($this->lang_php['protocol']) ?></th>
+                                            <th><?= e($this->lang_php['port']) ?>(imap/pop3)</th>
+                                            <th><?= e($this->lang_php['port']) ?>(smtp)</th>
+                                            <th><?= e($this->lang_php['ssl']) ?>(imap/pop3)</th>
+                                            <th><?= e($this->lang_php['ssl']) ?>(smtp)</th>
+                                            <th><?= e($this->lang_php['self_signed_cert']) ?></th>
+                                            <th><?= e($this->lang_php['folder']) ?></th>
+                                            <th><?= e($this->lang_php['username']) ?></th>
+                                            <th><?= e($this->lang_php['pass']) ?></th>
                                         </tr> 
                                     </thead>
                                     <tbody>
@@ -1623,29 +1623,29 @@ $projects_list = $this->getProjects();
                                                 ?>
                                                 <tr>
                                                     <td align="center">
-                                                        <a class="btn btn-default" onclick="getUpdateInfo(<?= $email['id'] ?>)" data-toggle="modal" data-target="#myModalCreateSync"><em class="fa fa-pencil"></em></a>
-                                                        <a class="btn btn-danger" href="?delete=<?= $email['id'] ?>" onclick="return confirm('<?= $this->lang_php['delete_confirm'] ?>')"><em class="fa fa-trash"></em></a>
-                                                        <a class="btn btn-info" onclick="checkConnection(<?= $email['id'] ?>)" data-check-conn="<?= $email['id'] ?>"><?= $this->lang_php['check'] ?> <i class="fa fa-refresh" aria-hidden="true"></i></a>
+                                                        <a class="btn btn-default" onclick="getUpdateInfo(<?= ejs($email['id']) ?>)" data-toggle="modal" data-target="#myModalCreateSync"><em class="fa fa-pencil"></em></a>
+                                                        <a class="btn btn-danger" href="?delete=<?= e($email['id']) ?>&amp;<?= e(csrf_param()) ?>" onclick="return confirm(<?= ejs($this->lang_php['delete_confirm']) ?>)"><em class="fa fa-trash"></em></a>
+                                                        <a class="btn btn-info" onclick="checkConnection(<?= ejs($email['id']) ?>)" data-check-conn="<?= e($email['id']) ?>"><?= e($this->lang_php['check']) ?> <i class="fa fa-refresh" aria-hidden="true"></i></a>
                                                     </td>
-                                                    <td><?= $email['id'] ?></td>
-                                                    <td data-hostname="<?= $email['id'] ?>"><?= $email['hostname'] ?></td>
-                                                    <td data-smtp-hostname="<?= $email['id'] ?>"><?= $email['smtp_hostname'] ?></td>
-                                                    <td data-protocol="<?= $email['id'] ?>"><?= $email['protocol'] ?></td>
-                                                    <td data-port="<?= $email['id'] ?>"><?= $email['port'] ?></td>
-                                                    <td data-smtp-port="<?= $email['id'] ?>"><?= $email['smtp_port'] ?></td>
-                                                    <td data-ssl="<?= $email['id'] ?>" data-ssl-status="<?= $email['_ssl'] ?>"><?= $email['_ssl'] == 1 ? $this->lang_php['yes'] : $this->lang_php['no'] ?></td>
-                                                    <td data-smtp-ssl="<?= $email['id'] ?>" data-smtp-ssl-status="<?= $email['smtp_ssl'] ?>"><?= $email['smtp_ssl'] == 1 ? $this->lang_php['yes'] : $this->lang_php['no'] ?></td>
-                                                    <td data-selfsigned="<?= $email['id'] ?>" data-cert-status="<?= $email['self_signed'] ?>"><?= $email['self_signed'] == 1 ? $this->lang_php['yes'] : $this->lang_php['no'] ?></td>
-                                                    <td data-folder="<?= $email['id'] ?>"><?= $email['folder'] ?></td>
-                                                    <td data-username="<?= $email['id'] ?>"><?= $email['username'] ?></td>
-                                                    <td data-password="<?= $email['id'] ?>"><?= $email['password'] ?></td>
+                                                    <td><?= e($email['id']) ?></td>
+                                                    <td data-hostname="<?= e($email['id']) ?>"><?= e($email['hostname']) ?></td>
+                                                    <td data-smtp-hostname="<?= e($email['id']) ?>"><?= e($email['smtp_hostname']) ?></td>
+                                                    <td data-protocol="<?= e($email['id']) ?>"><?= e($email['protocol']) ?></td>
+                                                    <td data-port="<?= e($email['id']) ?>"><?= e($email['port']) ?></td>
+                                                    <td data-smtp-port="<?= e($email['id']) ?>"><?= e($email['smtp_port']) ?></td>
+                                                    <td data-ssl="<?= e($email['id']) ?>" data-ssl-status="<?= e($email['_ssl']) ?>"><?= e($email['_ssl'] == 1 ? $this->lang_php['yes'] : $this->lang_php['no']) ?></td>
+                                                    <td data-smtp-ssl="<?= e($email['id']) ?>" data-smtp-ssl-status="<?= e($email['smtp_ssl']) ?>"><?= e($email['smtp_ssl'] == 1 ? $this->lang_php['yes'] : $this->lang_php['no']) ?></td>
+                                                    <td data-selfsigned="<?= e($email['id']) ?>" data-cert-status="<?= e($email['self_signed']) ?>"><?= e($email['self_signed'] == 1 ? $this->lang_php['yes'] : $this->lang_php['no']) ?></td>
+                                                    <td data-folder="<?= e($email['id']) ?>"><?= e($email['folder']) ?></td>
+                                                    <td data-username="<?= e($email['id']) ?>"><?= e($email['username']) ?></td>
+                                                    <td data-password="<?= e($email['id']) ?>"><?= e($email['password']) ?></td>
                                                 </tr>
                                                 <?php
                                             }
                                         } else {
                                             ?>
                                             <tr>
-                                                <td colspan="13"><?= $this->lang_php['none'] ?></td>
+                                                <td colspan="13"><?= e($this->lang_php['none']) ?></td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -1653,7 +1653,7 @@ $projects_list = $this->getProjects();
                             </div>
                         </div>
                         <div class="panel-footer">
-                            <a href="http://php.net/manual/en/book.imap.php" target="_blank"><img src="<?= base_url('assets/imgs/php_logo.png') ?>"></a> - IMAP, POP3 and NNTP | <a href="https://github.com/PHPMailer/PHPMailer" target="_blank"><img src="<?= base_url('assets/imgs/phpmailer_logo.png') ?>"></a>
+                            <a href="http://php.net/manual/en/book.imap.php" target="_blank"><img src="<?= e(base_url('assets/imgs/php_logo.png')) ?>"></a> - IMAP, POP3 and NNTP | <a href="https://github.com/PHPMailer/PHPMailer" target="_blank"><img src="<?= e(base_url('assets/imgs/phpmailer_logo.png')) ?>"></a>
                         </div>
                     </div>
                     <div id="err_info" class="alert alert-danger"></div>
@@ -1663,21 +1663,21 @@ $projects_list = $this->getProjects();
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel"><?= $this->lang_php['create'] ?></h4>
+                                    <h4 class="modal-title" id="myModalLabel"><?= e($this->lang_php['create']) ?></h4>
                                 </div>
                                 <div class="modal-body">
                                     <form role="form" method="POST" id="addEmailSync" action="">
                                         <input type="hidden" name="update" value="0">
                                         <div class="form-group">
-                                            <label for="hostname"><?= $this->lang_php['hostname'] ?>:</label>
-                                            <input type="text" class="form-control" name="hostname" placeholder="<?= $this->lang_php['example'] ?>: imap.gmail.com" value="" id="hostname">
+                                            <label for="hostname"><?= e($this->lang_php['hostname']) ?>:</label>
+                                            <input type="text" class="form-control" name="hostname" placeholder="<?= e($this->lang_php['example']) ?>: imap.gmail.com" value="" id="hostname">
                                         </div>
                                         <div class="form-group">
-                                            <label for="smtp_hostname">SMTP <?= $this->lang_php['hostname'] ?>:</label>
-                                            <input type="text" class="form-control" name="smtp_hostname" placeholder="<?= $this->lang_php['example'] ?>: smtp.gmail.com" value="" id="smtp_hostname">
+                                            <label for="smtp_hostname">SMTP <?= e($this->lang_php['hostname']) ?>:</label>
+                                            <input type="text" class="form-control" name="smtp_hostname" placeholder="<?= e($this->lang_php['example']) ?>: smtp.gmail.com" value="" id="smtp_hostname">
                                         </div>
                                         <div class="form-group">
-                                            <label for="protocol"><?= $this->lang_php['protocol'] ?>:</label>
+                                            <label for="protocol"><?= e($this->lang_php['protocol']) ?>:</label>
                                             <select class="form-control" name="protocol" onchange="setPort('imap')" id="protocol">
                                                 <option value="imap">imap</option>
                                                 <option value="pop3">pop3</option>
@@ -1685,40 +1685,40 @@ $projects_list = $this->getProjects();
                                             </select>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" onclick="setPort('imap')" name="_ssl" value="1"><?= $this->lang_php['ssl'] ?></label>
+                                            <label><input type="checkbox" onclick="setPort('imap')" name="_ssl" value="1"><?= e($this->lang_php['ssl']) ?></label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" onclick="setPort('ssl')" name="smtp_ssl" value="1"><?= $this->lang_php['ssl'] ?>(smtp)</label>
+                                            <label><input type="checkbox" onclick="setPort('ssl')" name="smtp_ssl" value="1"><?= e($this->lang_php['ssl']) ?>(smtp)</label>
                                         </div>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" name="self_signed_cert" value=""><?= $this->lang_php['self_signed_cert'] ?></label>
+                                            <label><input type="checkbox" name="self_signed_cert" value=""><?= e($this->lang_php['self_signed_cert']) ?></label>
                                         </div>
                                         <div class="form-group">
-                                            <label for="port"><?= $this->lang_php['port'] ?>:</label>
-                                            <input type="text" class="form-control" name="port" placeholder="<?= $this->lang_php['example'] ?>: 993" value="143" id="port">
+                                            <label for="port"><?= e($this->lang_php['port']) ?>:</label>
+                                            <input type="text" class="form-control" name="port" placeholder="<?= e($this->lang_php['example']) ?>: 993" value="143" id="port">
                                         </div>
                                         <div class="form-group">
-                                            <label for="smtp_port">SMTP <?= $this->lang_php['port'] ?>:</label>
-                                            <input type="text" class="form-control" name="smtp_port" placeholder="<?= $this->lang_php['example'] ?>: 587" value="587" id="smtp_port">
+                                            <label for="smtp_port">SMTP <?= e($this->lang_php['port']) ?>:</label>
+                                            <input type="text" class="form-control" name="smtp_port" placeholder="<?= e($this->lang_php['example']) ?>: 587" value="587" id="smtp_port">
                                         </div>
                                         <div class="form-group">
-                                            <label for="folder"><?= $this->lang_php['folder'] ?>:</label>
-                                            <input type="text" class="form-control" name="folder" placeholder="<?= $this->lang_php['example'] ?>: INBOX" value="" id="folder">
+                                            <label for="folder"><?= e($this->lang_php['folder']) ?>:</label>
+                                            <input type="text" class="form-control" name="folder" placeholder="<?= e($this->lang_php['example']) ?>: INBOX" value="" id="folder">
                                         </div>
                                         <div class="form-group">
-                                            <label for="uname_h"><?= $this->lang_php['username'] ?>:</label>
-                                            <input type="text" class="form-control" name="username" placeholder="<?= $this->lang_php['example'] ?>: kiril@gmail.com" value="" id="uname_h">
+                                            <label for="uname_h"><?= e($this->lang_php['username']) ?>:</label>
+                                            <input type="text" class="form-control" name="username" placeholder="<?= e($this->lang_php['example']) ?>: kiril@gmail.com" value="" id="uname_h">
                                         </div>
                                         <div class="form-group">
-                                            <label for="pass_h"><?= $this->lang_php['pass'] ?>:</label>
-                                            <input type="text" class="form-control" name="password" placeholder="<?= $this->lang_php['example'] ?>: <?= $this->lang_php['pass'] ?>" value="" id="pass_h">
+                                            <label for="pass_h"><?= e($this->lang_php['pass']) ?>:</label>
+                                            <input type="text" class="form-control" name="password" placeholder="<?= e($this->lang_php['example']) ?>: <?= e($this->lang_php['pass']) ?>" value="" id="pass_h">
                                         </div>
                                     </form>
                                     <div class="alert alert-danger" id="check-errors"></div>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= $this->lang_php['close'] ?></button>
-                                    <button type="button" class="btn btn-primary" id="save"><?= $this->lang_php['save'] ?></button>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"><?= e($this->lang_php['close']) ?></button>
+                                    <button type="button" class="btn btn-primary" id="save"><?= e($this->lang_php['save']) ?></button>
                                 </div>
                             </div>
                         </div>
@@ -1788,7 +1788,7 @@ $projects_list = $this->getProjects();
                         function getUpdateInfo(id) {
                             $.ajax({
                                 type: "POST",
-                                url: "<?= base_url('getsyncemailinfo') ?>",
+                                url: <?= js(base_url('getsyncemailinfo')) ?>,
                                 data: {eid: id}
                             }).done(function (data) {
                                 var info = JSON.parse(data);
@@ -1842,7 +1842,7 @@ $projects_list = $this->getProjects();
                             $('#err_info').empty();
                             $.ajax({
                                 type: "POST",
-                                url: "<?= base_url('sync_conn_check') ?>",
+                                url: <?= js(base_url('sync_conn_check')) ?>,
                                 data: {hostname: hostname, smtp_hostname: smtp_hostname, protocol: protocol, _ssl: _ssl, smtp_ssl: smtp_ssl, self_signed_cert: self_signed_cert, port: port, smtp_port: smtp_port, folder: folder, username: username, password: password}
                             }).done(function (data) {
                                 if (data == 1) {
@@ -1858,7 +1858,7 @@ $projects_list = $this->getProjects();
                         }
                     </script>
                 <?php } elseif (url_segment(1) !== false && url_segment(1) == 'logs') { ?>
-                    <h1><?= $this->lang_php['logs'] ?>:</h1>
+                    <h1><?= e($this->lang_php['logs']) ?>:</h1>
                     <hr>
                     <div class="table-responsive">
                         <?php
@@ -1870,7 +1870,7 @@ $projects_list = $this->getProjects();
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <th>PHP <?= $this->lang_php['error'] ?></th>
+                                        <th>PHP <?= e($this->lang_php['error']) ?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -1879,8 +1879,8 @@ $projects_list = $this->getProjects();
                                     while (($line = fgets($myfile)) !== false) {
                                         ?>
                                         <tr>
-                                            <td><?= $i ?></td>
-                                            <td class="danger"><?= $line ?></td>
+                                            <td><?= e($i) ?></td>
+                                            <td class="danger"><?= e($line) ?></td>
                                         </tr>
                                         <?php
                                         $i++;
@@ -1889,7 +1889,7 @@ $projects_list = $this->getProjects();
                                 </tbody>
                             </table>
                         <?php } else { ?>
-                            <div class="alert alert-info"><?= $this->lang_php['none'] ?></div>
+                            <div class="alert alert-info"><?= e($this->lang_php['none']) ?></div>
                         <?php } ?>
                     </div>
                 <?php }
@@ -1910,7 +1910,7 @@ $projects_list = $this->getProjects();
             $("#settings form.form-s img.s-loading").show();
             $.ajax({
                 type: "POST",
-                url: "<?= base_url('settings_search') ?>",
+                url: <?= js(base_url('settings_search')) ?>,
                 data: {find: search_q}
             }).done(function (data) {
                 if (data != 0) {

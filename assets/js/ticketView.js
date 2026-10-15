@@ -201,7 +201,7 @@ function assignToMe() {
         data: {ticket_id: ticketView.result_id, assigntome: ticketView.user_id}
     }).done(function (data) {
         if (data != 0) {
-            $(".assigned").empty().append(my_name);
+            $(".assigned").text(my_name);
         } else {
             alert(lang.ajax_err);
         }

@@ -5,6 +5,12 @@
  * https://github.com/issue-tracking-system/Project-Management-Software
  */
 
+$secure_cookie = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
+if (PHP_VERSION_ID >= 70300) {
+    session_set_cookie_params(array('lifetime' => 0, 'path' => '/', 'secure' => $secure_cookie, 'httponly' => true, 'samesite' => 'Lax'));
+} else {
+    session_set_cookie_params(0, '/; samesite=Lax', '', $secure_cookie, true);
+}
 session_start();
 define('APPLICATION_LOADED', true);
 define('HAS_SUBDOMAIN_SUPPORT', false);

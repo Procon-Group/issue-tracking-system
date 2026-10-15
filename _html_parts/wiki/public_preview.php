@@ -1,6 +1,7 @@
 <?php
 define('APPLICATION_LOADED', true);
 require '../../inc/db.php';
+require '../../inc/helpers.php';
 
 $req = preg_replace("/public\/hash.*/", '', $_SERVER['REQUEST_URI']);
 $link = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https://' : 'http://' . $_SERVER['HTTP_HOST'] . $req;
@@ -26,10 +27,10 @@ if ($con->connect_error) {
         <html>
             <head>
                 <meta charset="utf8">
-                <title><?= $arr['title'] ?></title>
+                <title><?= e($arr['title']) ?></title>
             </head>
             <body>
-                <?= $arr['content'] ?>
+                <?= clean_html($arr['content']) ?>
             </body>
         </html>
         <?php

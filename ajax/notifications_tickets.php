@@ -1,10 +1,10 @@
 <?php
 
-$result = $this->getTicketNotifications($_POST['project_id'], $_POST['user_id'], $_POST['from'], $_POST['to']);
+$result = $this->getTicketNotifications($_POST['project_id'], $this->user_id, $_POST['from'], $_POST['to']);
 if(!empty($result['notifs'])) {
     $html = '';
     foreach ($result['notifs'] as $res) {
-        $html .= '<div class="notif-design"><a href="' . base_url('profile/' . $res['username']) . '">' . $res['fullname'] . '</a> <span>' . $res['event'] . '</span> <a href="' . base_url('tickets/' . $res['proj_name'] . '/view/' . $res['abbr'] . '-' . $res['ticket_id']) . '">' . $res['subject'] . '</a></div>';
+        $html .= '<div class="notif-design"><a href="' . e(base_url('profile/' . $res['username'])) . '">' . e($res['fullname']) . '</a> <span>' . e($res['event']) . '</span> <a href="' . e(base_url('tickets/' . $res['proj_name'] . '/view/' . $res['abbr'] . '-' . $res['ticket_id'])) . '">' . e($res['subject']) . '</a></div>';
     }
     $arr = array('html' => $html, 'num' => $result['num']);
 } else {
