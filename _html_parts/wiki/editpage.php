@@ -45,24 +45,24 @@ if($the_page === null) {
 
 $this->title = $this->project_name . ' -' . $this->lang_php['title_edit_page'] . ' - ' . $the_page['title'];
 ?>
-<script src="<?= base_url('assets/js/ckeditor/ckeditor.js') ?>"></script>
+<script src="<?= e(base_url('assets/js/ckeditor/ckeditor.js')) ?>"></script>
 <div id="edit-wiki-page">
     <form action="" method="POST">
-        <input type="hidden" name="updatepage" value="<?= isset($_POST['firstedit']) ? '0' : '1' ?>">
-        <input type="hidden" name="page_id" value="<?= $want_id ?>">
-        <input type="hidden" name="space" value="<?= $the_page['key_space'] ?>">
+        <input type="hidden" name="updatepage" value="<?= e(isset($_POST['firstedit']) ? '0' : '1') ?>">
+        <input type="hidden" name="page_id" value="<?= e($want_id) ?>">
+        <input type="hidden" name="space" value="<?= e($the_page['key_space']) ?>">
         <div class="form-group">
-            <input type="text" class="form-control" name="title" value="<?= $the_page['title'] ?>">
+            <input type="text" class="form-control" name="title" value="<?= e($the_page['title']) ?>">
         </div>
         <div class="form-group">
-            <textarea name="content_edit_p" class="form-control"><?= isset($_POST['firstedit']) ? $get_template['content'] : $the_page['content'] ?></textarea>
+            <textarea name="content_edit_p" class="form-control"><?= e(isset($_POST['firstedit']) ? $get_template['content'] : $the_page['content']) ?></textarea>
             <script>
                 CKEDITOR.replace('content_edit_p');
             </script>
         </div>
         <div class="form-group">
-            <input type="submit" value="<?= $this->lang_php['update'] ?>" class="btn btn-primary">
-            <a class="btn btn-danger" href="<?= base_url('wiki/' . $project_name . '/display/' . $the_page['key_space'] . '?viewPageId=' . $want_id) ?>"><?= $this->lang_php['close'] ?></a>
+            <input type="submit" value="<?= e($this->lang_php['update']) ?>" class="btn btn-primary">
+            <a class="btn btn-danger" href="<?= e(base_url('wiki/' . $project_name . '/display/' . $the_page['key_space'] . '?viewPageId=' . $want_id)) ?>"><?= e($this->lang_php['close']) ?></a>
         </div>
     </form>
 </div>

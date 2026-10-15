@@ -16,7 +16,7 @@ function redirect($location = '', $get_parameters = true) {
             header('Location: ' . $location . '');
             exit;
         } else {
-            echo '<script>document.location.href = "' . $location . '"</script>';
+            echo '<script>document.location.href = ' . js($location) . '</script>';
             exit;
         }
     }
@@ -185,6 +185,8 @@ function returnSpaceImageUrl($image) {
 }
 
 function paging($action = '', $query_string = '', $count = 0, $page = 0, $per_page = 20) {
+    $base = e(base_url($action));
+    $query_string = e($query_string);
     if ($page < 0 || $page >= ceil($count / $per_page))
         $page = 0;
 
@@ -197,8 +199,8 @@ function paging($action = '', $query_string = '', $count = 0, $page = 0, $per_pa
         $paging .= '<nav><ul class="pagination">';
 
         if ($pp >= 2) {
-            $paging .= '<li><a aria-label="Първа" href="' . base_url($action) . '?pg=0' . $query_string . '"><span aria-hidden="true">&laquo;&laquo;</span></a></li>';
-            $paging .= '<li><a aria-label="Предишна" href="' . base_url($action) . '?pg=' . $pz . $query_string . '"><span aria-hidden="true">&laquo;</span></a></li>';
+            $paging .= '<li><a aria-label="Първа" href="' . $base . '?pg=0' . $query_string . '"><span aria-hidden="true">&laquo;&laquo;</span></a></li>';
+            $paging .= '<li><a aria-label="Предишна" href="' . $base . '?pg=' . $pz . $query_string . '"><span aria-hidden="true">&laquo;</span></a></li>';
         }
 
         if ($number_pages > 10 and ( $page < 5 or $page == 5)) {
@@ -219,14 +221,14 @@ function paging($action = '', $query_string = '', $count = 0, $page = 0, $per_pa
         }
 
         if ($page > 2 and $bbn > 2) {
-            $paging .= '<li><a href="' . base_url($action) . '?pg=0' . $query_string . '" >1</a></li>';
+            $paging .= '<li><a href="' . $base . '?pg=0' . $query_string . '" >1</a></li>';
         }
 
         for ($i = $bbn; $i <= $bbkr; $i++) {
             if ($asa == $i - 1) {
                 $paging .= '<li class="active"><a href="#">' . $i . '</a></li>';
             } else {
-                $paging .= '<li><a href="' . base_url($action) . '?pg=' . ($i - 1) . $query_string . '">' . $i . '</a></li>';
+                $paging .= '<li><a href="' . $base . '?pg=' . ($i - 1) . $query_string . '">' . $i . '</a></li>';
             }
         }
 
@@ -234,11 +236,11 @@ function paging($action = '', $query_string = '', $count = 0, $page = 0, $per_pa
             $paging .= '<li><a>...</a></li>';
         }
         if ($page < $number_pages and $bbkr < $number_pages) {
-            $paging .= '<li><a href="' . baseurl($action) . '?pg=' . ($number_pages - 1) . $query_string . '" >' . $number_pages . '</a></li>';
+            $paging .= '<li><a href="' . $base . '?pg=' . ($number_pages - 1) . $query_string . '" >' . $number_pages . '</a></li>';
         }
         if ($asa != ($number_pages - 1)) {
-            $paging .= '<li><a aria-label="Следваща" href="' . base_url($action) . '?pg=' . $pp . $query_string . '"><span aria-hidden="true">&raquo;</span></a></li>';
-            $paging .= '<li><a aria-label="Последна" href="' . base_url($action) . '?pg=' . ($number_pages - 1) . $query_string . '"><span aria-hidden="true">&raquo;&raquo;</span></a></li>';
+            $paging .= '<li><a aria-label="Следваща" href="' . $base . '?pg=' . $pp . $query_string . '"><span aria-hidden="true">&raquo;</span></a></li>';
+            $paging .= '<li><a aria-label="Последна" href="' . $base . '?pg=' . ($number_pages - 1) . $query_string . '"><span aria-hidden="true">&raquo;&raquo;</span></a></li>';
         }
 
         $paging .= '</ul></nav>';
@@ -291,4 +293,121 @@ function writeLog($text, $logfile = 'logs/errors.log') {
     }
 }
 
-?>
+/*
+ * Output escaping - every value printed into a page goes through one of these
+ */
+
+function e($value) { //HTML text and attribute values
+    return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+function js($value) { //a JavaScript literal inside a <script> block
+    return json_encode($value, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE);
+}
+
+function ejs($value) { //a JavaScript literal inside an HTML attribute, e.g. onclick="f(ejs-output)"
+    return e(json_encode($value, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE));
+}
+
+function clean_html($html) { //rich text from the editor: keep formatting, drop anything that can run script
+    $html = (string) $html;
+    if (trim($html) === '') {
+        return '';
+    }
+    static $allowed = array(
+        'a' => array('href', 'target', 'rel', 'name', 'title'),
+        'img' => array('src', 'alt', 'width', 'height', 'title'),
+        'table' => array('border', 'cellpadding', 'cellspacing', 'width', 'summary'),
+        'td' => array('colspan', 'rowspan', 'width', 'height', 'valign'),
+        'th' => array('colspan', 'rowspan', 'width', 'height', 'valign', 'scope'),
+        'col' => array('span', 'width'), 'colgroup' => array('span', 'width'),
+        'ol' => array('start', 'type'), 'ul' => array('type'), 'li' => array('value'),
+        'font' => array('color', 'face', 'size'),
+        'p' => array(), 'br' => array(), 'div' => array(), 'span' => array(), 'b' => array(), 'strong' => array(),
+        'i' => array(), 'em' => array(), 'u' => array(), 's' => array(), 'strike' => array(), 'del' => array(), 'ins' => array(),
+        'sub' => array(), 'sup' => array(), 'small' => array(), 'big' => array(), 'blockquote' => array(), 'pre' => array(),
+        'code' => array(), 'h1' => array(), 'h2' => array(), 'h3' => array(), 'h4' => array(), 'h5' => array(), 'h6' => array(),
+        'hr' => array(), 'thead' => array(), 'tbody' => array(), 'tfoot' => array(), 'tr' => array(), 'caption' => array(),
+        'dl' => array(), 'dt' => array(), 'dd' => array(), 'abbr' => array(), 'cite' => array(), 'q' => array(),
+        'figure' => array(), 'figcaption' => array(), 'address' => array(),
+    );
+    static $global_attrs = array('class', 'style', 'title', 'align', 'dir', 'lang');
+    static $drop_with_content = array('script', 'style', 'iframe', 'frame', 'frameset', 'object', 'embed', 'applet', 'form',
+        'input', 'button', 'textarea', 'select', 'option', 'svg', 'math', 'link', 'meta', 'base', 'noscript', 'template', 'title', 'head');
+
+    $doc = new DOMDocument();
+    $previous = libxml_use_internal_errors(true);
+    $doc->loadHTML('<?xml encoding="UTF-8"><div id="__clean_root">' . $html . '</div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET);
+    libxml_clear_errors();
+    libxml_use_internal_errors($previous);
+    $root = $doc->getElementById('__clean_root');
+    if ($root === null) {
+        return e(strip_tags($html));
+    }
+
+    $walk = function (DOMNode $node) use (&$walk, $allowed, $global_attrs, $drop_with_content) {
+        for ($child = $node->firstChild; $child !== null; $child = $next) {
+            $next = $child->nextSibling;
+            if ($child instanceof DOMText) {
+                continue;
+            }
+            if (!($child instanceof DOMElement)) { //comments, processing instructions, CDATA
+                $node->removeChild($child);
+                continue;
+            }
+            $tag = strtolower($child->nodeName);
+            if (in_array($tag, $drop_with_content, true)) {
+                $node->removeChild($child);
+                continue;
+            }
+            if (!isset($allowed[$tag])) { //unknown tag: keep its text, lose the tag
+                $walk($child);
+                while ($child->firstChild !== null) {
+                    $node->insertBefore($child->firstChild, $child);
+                }
+                $node->removeChild($child);
+                continue;
+            }
+            $keep = array_merge($allowed[$tag], $global_attrs);
+            foreach (iterator_to_array($child->attributes) as $attr) {
+                $name = strtolower($attr->nodeName);
+                $value = $attr->nodeValue;
+                $ok = in_array($name, $keep, true);
+                if ($ok && ($name === 'href' || $name === 'src')) {
+                    $ok = clean_url_ok($value, $tag === 'img' && $name === 'src');
+                }
+                if ($ok && $name === 'style') {
+                    $ok = !preg_match('/expression|javascript|vbscript|url\s*\(|@import|behavior|-moz-binding|[<>\\\\]/i', $value);
+                }
+                if (!$ok) {
+                    $child->removeAttribute($attr->nodeName);
+                }
+            }
+            if ($tag === 'a' && $child->getAttribute('target') !== '') {
+                $child->setAttribute('rel', 'noopener noreferrer');
+            }
+            $walk($child);
+        }
+    };
+    $walk($root);
+
+    $out = '';
+    foreach ($root->childNodes as $child) {
+        $out .= $doc->saveHTML($child);
+    }
+    return $out;
+}
+
+function clean_url_ok($url, $allow_data_image = false) {
+    $url = trim(preg_replace('/[\x00-\x20]+/', '', html_entity_decode((string) $url, ENT_QUOTES | ENT_HTML5, 'UTF-8')));
+    if ($url === '' || $url[0] === '#' || $url[0] === '/' || $url[0] === '?' || $url[0] === '.') {
+        return true;
+    }
+    if (preg_match('/^(https?|mailto|ftp|tel):/i', $url)) {
+        return true;
+    }
+    if ($allow_data_image && preg_match('#^data:image/(png|gif|jpe?g|webp);base64,#i', $url)) {
+        return true;
+    }
+    return !preg_match('/^[a-z0-9+.-]*:/i', $url); //relative link without a scheme
+}

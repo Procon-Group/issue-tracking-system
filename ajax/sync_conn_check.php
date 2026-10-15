@@ -53,8 +53,8 @@ $imap_errors = imap_errors(); //true or false
 if ($imap_errors === false && $smtp_errors === false) {
     echo '1';
 } elseif ($imap_errors !== false) {
-    echo $connection;
+    echo e($connection);
 } elseif ($smtp_errors === true) {
-    echo $smtp_err_info;
+    echo e($smtp_err_info);
 }
 ?>

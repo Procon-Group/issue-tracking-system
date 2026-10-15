@@ -142,7 +142,8 @@ class Main extends Database {
         } else {
             $login_alert = '';
         }
-        $_SESSION['alert'] = '<div class="alert alert-' . $type . ' ' . $login_alert . ' top-20">' . $msg . '</div>';
+        //messages are plain text; line breaks become <br>
+        $_SESSION['alert'] = '<div class="alert alert-' . e($type) . ' ' . $login_alert . ' top-20">' . nl2br(e($msg), false) . '</div>';
     }
 
     private function setRememberCookie($value, $expire) {

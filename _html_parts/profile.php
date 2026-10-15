@@ -48,55 +48,55 @@ if (isset($_POST['update'])) {
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#"><?= $_SERVER['HTTP_HOST'] ?></a>
+                    <a class="navbar-brand" href="#"><?= e($_SERVER['HTTP_HOST']) ?></a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="<?= $mine === true && !isset($_GET['sub-page']) ? 'active' : '' ?>"><a href="<?= base_url('profile') ?>"><?= $this->lang_php['profile'] ?></a></li>
-                        <li class="<?= isset($_GET['sub-page']) && $_GET['sub-page'] == 'list-users' ? 'active' : '' ?>"><a href="<?= base_url('profile?sub-page=list-users') ?>"><?= $this->lang_php['list_users'] ?></a></li>
+                        <li class="<?= e($mine === true && !isset($_GET['sub-page']) ? 'active' : '') ?>"><a href="<?= e(base_url('profile')) ?>"><?= e($this->lang_php['profile']) ?></a></li>
+                        <li class="<?= e(isset($_GET['sub-page']) && $_GET['sub-page'] == 'list-users' ? 'active' : '') ?>"><a href="<?= e(base_url('profile?sub-page=list-users')) ?>"><?= e($this->lang_php['list_users']) ?></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?= base_url('home') ?>"><?= $this->lang_php['home'] ?></a></li>
+                        <li><a href="<?= e(base_url('home')) ?>"><?= e($this->lang_php['home']) ?></a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= $this->lang_php['goto'] ?> <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?= e($this->lang_php['goto']) ?> <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li class="dropdown-header"><?= $this->lang_php['tickets'] ?></li>
+                                <li class="dropdown-header"><?= e($this->lang_php['tickets']) ?></li>
                                 <?php foreach ($projects as $project) { ?>
-                                    <li><a href="<?= base_url('tickets/' . $project['name']) ?>"><?= $project['name'] ?></a></li>
+                                    <li><a href="<?= e(base_url('tickets/' . $project['name'])) ?>"><?= e($project['name']) ?></a></li>
                                 <?php } ?>
                                 <li role="separator" class="divider"></li>
-                                <li class="dropdown-header"><?= $this->lang_php['wiki'] ?></li>
+                                <li class="dropdown-header"><?= e($this->lang_php['wiki']) ?></li>
                                 <?php foreach ($projects as $project) { ?>
-                                    <li><a href="<?= base_url('wiki/' . $project['name']) ?>"><?= $project['name'] ?></a></li>
+                                    <li><a href="<?= e(base_url('wiki/' . $project['name'])) ?>"><?= e($project['name']) ?></a></li>
                                 <?php } ?>
                             </ul>
                         </li>
-                        <li><a href="<?= base_url('logout') ?>"><?= $this->lang_php['logout'] ?></a></li>
+                        <li><a href="<?= e(base_url('logout')) ?>"><?= e($this->lang_php['logout']) ?></a></li>
                     </ul>
                 </div>
             </div>
         </nav>
         <?php if ($error === true) { ?>
-            <div class="alert alert-danger"><?= $this->lang_php['profile_not_found'] ?></div>
+            <div class="alert alert-danger"><?= e($this->lang_php['profile_not_found']) ?></div>
         <?php } elseif (!isset($_GET['sub-page']) && $mine == true) { ?>
             <div class="row profile">
                 <div class="col-md-3">
                     <div class="profile-sidebar">
                         <div class="profile-userpic">
-                            <img src="<?= base_url(returnImageUrl($this->image)) ?>" class="img-responsive" alt="">
+                            <img src="<?= e(base_url(returnImageUrl($this->image))) ?>" class="img-responsive" alt="">
                         </div>
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name">
-                                <?= $this->fullname ?>
+                                <?= e($this->fullname) ?>
                             </div>
                             <div class="profile-usertitle-job">
-                                <?= $this->profession ?>
+                                <?= e($this->profession) ?>
                             </div>
                         </div>
                         <div class="profile-usermenu">
                             <ul class="nav">
-                                <li class="<?= !isset($_GET['mine-tab']) || $_GET['mine-tab'] == '' ? 'active' : '' ?>"><a href="<?= base_url('profile') ?>"><i class="glyphicon glyphicon-home"></i><?= $this->lang_php['overview'] ?> </a></li>
-                                <li class="<?= isset($_GET['mine-tab']) && $_GET['mine-tab'] == 'settings' ? 'active' : '' ?>"><a href="<?= base_url('profile?mine-tab=settings') ?>"><i class="glyphicon glyphicon-user"></i><?= $this->lang_php['account_settings'] ?> </a></li>
+                                <li class="<?= e(!isset($_GET['mine-tab']) || $_GET['mine-tab'] == '' ? 'active' : '') ?>"><a href="<?= e(base_url('profile')) ?>"><i class="glyphicon glyphicon-home"></i><?= e($this->lang_php['overview']) ?> </a></li>
+                                <li class="<?= e(isset($_GET['mine-tab']) && $_GET['mine-tab'] == 'settings' ? 'active' : '') ?>"><a href="<?= e(base_url('profile?mine-tab=settings')) ?>"><i class="glyphicon glyphicon-user"></i><?= e($this->lang_php['account_settings']) ?> </a></li>
                             </ul>
                         </div>
                     </div>
@@ -112,31 +112,31 @@ if (isset($_POST['update'])) {
                             <div class="tabbable-panel">
                                 <div class="tabbable-line">
                                     <ul class="nav nav-tabs ">
-                                        <li class="active"><a href="#activity-tickets" data-toggle="tab"><?= $this->lang_php['activity_tickets'] ?></a></li>
-                                        <li><a href="#activity-wiki" data-toggle="tab"><?= $this->lang_php['activity_wiki'] ?></a></li>
+                                        <li class="active"><a href="#activity-tickets" data-toggle="tab"><?= e($this->lang_php['activity_tickets']) ?></a></li>
+                                        <li><a href="#activity-wiki" data-toggle="tab"><?= e($this->lang_php['activity_wiki']) ?></a></li>
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="activity-tickets">
                                             <p>
-                                                <?= $stream_t['mine'] !== null ? activityForeach($stream_t['mine']) : 'No Activity' ?>
+                                                <?= e($stream_t['mine'] !== null ? activityForeach($stream_t['mine']) : 'No Activity') ?>
                                             <div id="mine-ajax"></div>
                                             </p>
                                             <p>
-                                                <a href="javascript:void(0)" class="btn btn-success" onClick="showMore(<?= $this->user_id ?>, <?= $this->project_id ?>, true)"><?= $this->lang_php['show_more'] ?></a>
+                                                <a href="javascript:void(0)" class="btn btn-success" onClick="showMore(<?= e($this->user_id) ?>, <?= e($this->project_id) ?>, true)"><?= e($this->lang_php['show_more']) ?></a>
                                             </p>
                                         </div>
                                         <div class="tab-pane" id="activity-wiki">
                                             <p>
-                                                <?= !empty($stream_w) ? activityForeach($stream_w, 1) : $this->lang_php['no_activity'] ?>
+                                                <?= e(!empty($stream_w) ? activityForeach($stream_w, 1) : $this->lang_php['no_activity']) ?>
                                             </p>
                                             <p>
-                                                <a href="javascript:void(0)" class="btn btn-success" onClick="showMoreWiki(0)"><?= $this->lang_php['show_more'] ?></a>
+                                                <a href="javascript:void(0)" class="btn btn-success" onClick="showMoreWiki(0)"><?= e($this->lang_php['show_more']) ?></a>
                                             </p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <script src="<?= base_url('assets/js/profileFunctions.js') ?>"></script>
+                            <script src="<?= e(base_url('assets/js/profileFunctions.js')) ?>"></script>
                             <?php
                         } elseif (isset($_GET['mine-tab']) && $_GET['mine-tab'] == 'settings') {
                             $_POST = $this->social;
@@ -148,27 +148,27 @@ if (isset($_POST['update'])) {
                             <div class="alert alert-danger" id="reg-errors" style="display:none;"></div>
                             <form class="form-horizontal" role="form" method="POST" action="" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label"><?= $this->lang_php['pass'] ?> *</label>
+                                    <label class="col-sm-2 control-label"><?= e($this->lang_php['pass']) ?> *</label>
                                     <div class="col-sm-10">
                                         <input class="form-control" id="pwd" name="password" type="text" value="">
-                                        <span><?= $this->lang_php['pass_strenght'] ?>:</span>
+                                        <span><?= e($this->lang_php['pass_strenght']) ?>:</span>
                                         <div class="progress">
                                             <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
                                             </div>
                                         </div>
-                                        <button type="button" id="GeneratePwd" class="btn btn-default"><?= $this->lang_php['gen_pass'] ?></button> 
+                                        <button type="button" id="GeneratePwd" class="btn btn-default"><?= e($this->lang_php['gen_pass']) ?></button> 
                                         <p id="demo"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label"><?= $this->lang_php['full_name'] ?> *</label>
+                                    <label class="col-sm-2 control-label"><?= e($this->lang_php['full_name']) ?> *</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="fullname" type="text" value="<?= isset($_POST['fullname']) ? $_POST['fullname'] : '' ?>">
+                                        <input class="form-control" name="fullname" type="text" value="<?= e(isset($_POST['fullname']) ? $_POST['fullname'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <img src="" alt="none" style="display:none;" id="cover">
-                                    <label class="col-sm-2 control-label"><?= $this->lang_php['image'] ?></label>
+                                    <label class="col-sm-2 control-label"><?= e($this->lang_php['image']) ?></label>
                                     <div class="col-sm-10">
                                         <input type="file"  name="image" id="fileToUpload">
                                     </div>
@@ -176,67 +176,67 @@ if (isset($_POST['update'])) {
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Facebook <i class="fa fa-facebook-official"></i></label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="facebook" type="text" value="<?= isset($_POST['facebook']) ? $_POST['facebook'] : '' ?>">
+                                        <input class="form-control" name="facebook" type="text" value="<?= e(isset($_POST['facebook']) ? $_POST['facebook'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Twitter <i class="fa fa-twitter-square"></i></label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="twitter" type="text" value="<?= isset($_POST['twitter']) ? $_POST['twitter'] : '' ?>">
+                                        <input class="form-control" name="twitter" type="text" value="<?= e(isset($_POST['twitter']) ? $_POST['twitter'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Linked In <i class="fa fa-linkedin-square"></i></label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="linkedin" type="text" value="<?= isset($_POST['linkedin']) ? $_POST['linkedin'] : '' ?>">
+                                        <input class="form-control" name="linkedin" type="text" value="<?= e(isset($_POST['linkedin']) ? $_POST['linkedin'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Skype <i class="fa fa-skype"></i></label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="skype" type="text" value="<?= isset($_POST['skype']) ? $_POST['skype'] : '' ?>">
+                                        <input class="form-control" name="skype" type="text" value="<?= e(isset($_POST['skype']) ? $_POST['skype'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2 control-label">Email <i class="fa fa-envelope"></i></label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" name="email" type="text" value="<?= isset($_POST['email']) ? $_POST['email'] : '' ?>">
+                                        <input class="form-control" name="email" type="text" value="<?= e(isset($_POST['email']) ? $_POST['email'] : '') ?>">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2 control-label"><?= $this->lang_php['language'] ?></label>
+                                    <label class="col-sm-2 control-label"><?= e($this->lang_php['language']) ?></label>
                                     <div class="col-sm-10">
-                                        <select name="lang" class="form-control" <?= $this->user_lang == null ? 'disabled' : '' ?>>
+                                        <select name="lang" class="form-control" <?= e($this->user_lang == null ? 'disabled' : '') ?>>
                                             <?php foreach ($abbreviations as $abbreviature) { ?>
-                                                <option <?= $abbreviature == $this->user_lang ? 'selected' : '' ?> value="<?= $abbreviature ?>"><?= $abbreviature ?></option>
+                                                <option <?= e($abbreviature == $this->user_lang ? 'selected' : '') ?> value="<?= e($abbreviature) ?>"><?= e($abbreviature) ?></option>
                                             <?php } ?>
                                         </select>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" value="" id="default_lang" <?= $this->user_lang == null ? 'checked=""' : '' ?>><?= $this->lang_php['use_site_default'] ?></label>
+                                            <label><input type="checkbox" value="" id="default_lang" <?= e($this->user_lang == null ? 'checked=""' : '') ?>><?= e($this->lang_php['use_site_default']) ?></label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-10 col-sm-offset-2">
                                         <div class="checkbox">
-                                            <label><input type="checkbox" <?= isset($_POST['email_notif']) && $_POST['email_notif'] == 1 ? 'checked' : '' ?> name="email_notif" value="1"><?= $this->lang_php['receive_email_on_notif'] ?></label>
+                                            <label><input type="checkbox" <?= e(isset($_POST['email_notif']) && $_POST['email_notif'] == 1 ? 'checked' : '') ?> name="email_notif" value="1"><?= e($this->lang_php['receive_email_on_notif']) ?></label>
                                         </div>
                                     </div>
                                 </div>
-                                <input type="hidden" name="update_user" value="<?= $this->user_id ?>">
-                                <input type="submit" class="btn btn-info pull-right" name="update" onclick="return validateForm()" value="<?= $this->lang_php['update_info'] ?>">
+                                <input type="hidden" name="update_user" value="<?= e($this->user_id) ?>">
+                                <input type="submit" class="btn btn-info pull-right" name="update" onclick="return validateForm()" value="<?= e($this->lang_php['update_info']) ?>">
                             </form>
                             <div class="clearfix"></div>
-                            <script type="text/javascript" src="<?= base_url('assets/js/zxcvbn.js') ?>"></script>
-                            <script type="text/javascript" src="<?= base_url('assets/js/zxcvbn_bootstrap3.js') ?>"></script>
-                            <script type="text/javascript" src="<?= base_url('assets/js/pGenerator.jquery.js') ?>"></script>
+                            <script type="text/javascript" src="<?= e(base_url('assets/js/zxcvbn.js')) ?>"></script>
+                            <script type="text/javascript" src="<?= e(base_url('assets/js/zxcvbn_bootstrap3.js')) ?>"></script>
+                            <script type="text/javascript" src="<?= e(base_url('assets/js/pGenerator.jquery.js')) ?>"></script>
                             <script>
                             var profileValidator = {
                                 fullname_regex: <?= $GLOBALS['CONFIG']['FULLNAMEREGEX'] ?>,
                                 email_regex: <?= $GLOBALS['CONFIG']['EMAILREGEX'] ?>
                             };
                             </script>
-                            <script src="<?= base_url('assets/js/profileValidator.js') ?>"></script>
+                            <script src="<?= e(base_url('assets/js/profileValidator.js')) ?>"></script>
                         <?php } ?>
                     </div>
                 </div>
@@ -249,14 +249,14 @@ if (isset($_POST['update'])) {
                 <div class="col-xs-6 col-xs-offset-3">
                     <div class="profile-sidebar">
                         <div class="profile-userpic">
-                            <img src="<?= base_url(returnImageUrl($usr_preview[0]['image'])) ?>" class="img-responsive" alt="">
+                            <img src="<?= e(base_url(returnImageUrl($usr_preview[0]['image']))) ?>" class="img-responsive" alt="">
                         </div>
                         <div class="profile-usertitle">
                             <div class="profile-usertitle-name">
-                                <?= $usr_preview[0]['fullname'] ?>
+                                <?= e($usr_preview[0]['fullname']) ?>
                             </div>
                             <div class="profile-usertitle-job">
-                                <?= $usr_preview[0]['profession_name'] ?>
+                                <?= e($usr_preview[0]['profession_name']) ?>
                             </div>
                         </div>
                     </div> 
@@ -297,7 +297,7 @@ if (isset($_POST['update'])) {
                             <form method="GET" action="">
                                 <input type="hidden" name="sub-page" value="list-users">
                                 <div class="input-group">
-                                    <input type="text" id="example-input1-group2" value="<?= isset($_GET['find-user']) ? urldecode($_GET['find-user']) : '' ?>" name="find-user" class="form-control" placeholder="<?= $this->lang_php['search'] ?>">
+                                    <input type="text" id="example-input1-group2" value="<?= e(isset($_GET['find-user']) ? urldecode($_GET['find-user']) : '') ?>" name="find-user" class="form-control" placeholder="<?= e($this->lang_php['search']) ?>">
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-effect-ripple btn-primary"><i class="fa fa-search"></i></button>
                                     </span>
@@ -309,7 +309,7 @@ if (isset($_POST['update'])) {
             </div>
             <div class="profiles-boxes">
                 <div class="row">
-                    <?= loop_users($profiles, null, $arr_lang); ?>
+                    <?php loop_users($profiles, null, $arr_lang); ?>
                 </div>
             </div>
             <?php
