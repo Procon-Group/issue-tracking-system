@@ -278,7 +278,7 @@ if (url_segment(3) == false || $result == false) {
                                     <tr>
                                         <td><?= e(date(TRACKTIME_CREATE_DATE_TYPE, $tracktime['date_tracked'])) ?></td>
                                         <td class="text-center"><?= e(secondsToTime($tracktime['worked_seconds'])) ?></td>
-                                        <td><?php if ($disabled != true) { ?><a href="?remove_track=<?= e($tracktime['id']) ?>" onclick="confirm(<?= ejs($this->lang_php['confirm_del_track']) ?>)"><span class="glyphicon glyphicon-remove"></span></a><?php } ?></td>
+                                        <td><?php if ($disabled != true) { ?><a href="?remove_track=<?= e($tracktime['id']) ?>&amp;<?= e(csrf_param()) ?>" onclick="confirm(<?= ejs($this->lang_php['confirm_del_track']) ?>)"><span class="glyphicon glyphicon-remove"></span></a><?php } ?></td>
                                     </tr>
                                     <?php
                                 }
@@ -378,7 +378,7 @@ if (url_segment(3) == false || $result == false) {
                                                             <?= e(isset($comment['sub']) ? count($comment['sub']) : '0') ?> <?= e($this->lang_php['comments']) ?>
                                                         </a>
                                                     <?php } if ($this->user_id == $comment['user_id'] && $comment['send'] == '0') { ?>
-                                                        <a class="btn btn-danger btn-circle text-uppercase" href="?delete_comment=<?= e($comment['id']) ?>" title="remove" onClick="return confirm('<?= e($this->lang_php['comment_del_confirm']) ?>')">
+                                                        <a class="btn btn-danger btn-circle text-uppercase" href="?delete_comment=<?= e($comment['id']) ?>&amp;<?= e(csrf_param()) ?>" title="remove" onClick="return confirm('<?= e($this->lang_php['comment_del_confirm']) ?>')">
                                                             <span class="glyphicon glyphicon-remove"></span>
                                                             <?= e($this->lang_php['delete']) ?>
                                                         </a>
@@ -436,7 +436,7 @@ if (url_segment(3) == false || $result == false) {
                                                                                 <span class="glyphicon glyphicon-pencil"></span>
                                                                                 <?= e($this->lang_php['edit']) ?>
                                                                             </a>
-                                                                            <a class="btn btn-danger btn-circle text-uppercase" href="?delete_comment=<?= e($sub['id']) ?>" title="remove" onClick="return confirm('<?= e($this->lang_php['comment_del_confirm']) ?>')">
+                                                                            <a class="btn btn-danger btn-circle text-uppercase" href="?delete_comment=<?= e($sub['id']) ?>&amp;<?= e(csrf_param()) ?>" title="remove" onClick="return confirm('<?= e($this->lang_php['comment_del_confirm']) ?>')">
                                                                                 <span class="glyphicon glyphicon-remove"></span>
                                                                                 <?= e($this->lang_php['delete']) ?>
                                                                             </a>

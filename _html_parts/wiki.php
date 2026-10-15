@@ -108,7 +108,7 @@ $notif_num = $notifications < MAX_NUM_NOTIF ? $notifications : MAX_NUM_NOTIF . '
                                 </a>
                             </li>
                             <li class="divider" role="separator"></li>
-                            <li><a href="<?= e(base_url('logout')) ?>"><i class="fa fa-sign-out"></i> <?= e($this->lang_php['logout']) ?></a></li>
+                            <li><a href="<?= e(base_url('logout?' . csrf_param())) ?>"><i class="fa fa-sign-out"></i> <?= e($this->lang_php['logout']) ?></a></li>
                         </ul>
                     </li>
                 </ul>

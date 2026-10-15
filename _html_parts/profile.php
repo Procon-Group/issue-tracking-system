@@ -71,7 +71,7 @@ if (isset($_POST['update'])) {
                                 <?php } ?>
                             </ul>
                         </li>
-                        <li><a href="<?= e(base_url('logout')) ?>"><?= e($this->lang_php['logout']) ?></a></li>
+                        <li><a href="<?= e(base_url('logout?' . csrf_param())) ?>"><?= e($this->lang_php['logout']) ?></a></li>
                     </ul>
                 </div>
             </div>

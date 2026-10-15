@@ -583,7 +583,7 @@ $projects_list = $this->getProjects();
                                         <div class="col-xs-4">
                                             <input type="submit" name="setloginimage" class="btn btn-info" value="<?= e($this->lang_php['save']) ?>">
                                             <?php if ($login_image != null) { ?>
-                                                <a href="?removeLoginImage=true" class="btn btn-danger"><?= e($this->lang_php['remove']) ?></a>
+                                                <a href="?removeLoginImage=true&amp;<?= e(csrf_param()) ?>" class="btn btn-danger"><?= e($this->lang_php['remove']) ?></a>
                                             <?php } ?>
                                         </div>
                                     </form>
@@ -1100,7 +1100,7 @@ $projects_list = $this->getProjects();
                                             <td><a href="<?= e(base_url('tickets/' . $proj['name'] . '/dashboard')) ?>"><?= e($this->lang_php['open_dash']) ?> (<?= e($proj['num_tickets'] < MAX_NUM_NOTIF ? $proj['num_tickets'] : MAX_NUM_IN_BRECKETS . '+') ?>)</a></td>
                                             <td><a href="<?= e(base_url('settings/profiles?for_proj=' . $proj['id'])) ?>"><?= e($this->lang_php['see_list']) ?> (<?= e($proj['num_users'] < MAX_NUM_NOTIF ? $proj['num_users'] : MAX_NUM_IN_BRECKETS . '+') ?>)</a></td>
                                             <td><a href="<?= e(base_url('settings#settings-activ-tab')) ?>"><?= e($this->lang_php['see_activity_log']) ?> (<?= e($proj['num_logs_tickets'] < MAX_NUM_NOTIF ? $proj['num_logs_tickets'] : MAX_NUM_IN_BRECKETS . '+') ?>)</a></td>
-                                            <td class="bg-danger text-center"><a href="<?= e(base_url('settings/projects?delete_project=' . $proj['id'])) ?>" onclick="return confirm(<?= ejs($this->lang_php['deleting_project']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                            <td class="bg-danger text-center"><a href="<?= e(base_url('settings/projects?delete_project=' . $proj['id'] . '&' . csrf_param())) ?>" onclick="return confirm(<?= ejs($this->lang_php['deleting_project']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -1289,7 +1289,7 @@ $projects_list = $this->getProjects();
                                         <td><?= e($space['proj_name']) ?></td>
                                         <td><?= e(date(SPACES_TIME_CREATED, $space['timestamp'])) ?></td>
                                         <td class="bg-info text-center"><a href="javascript:void(0)" onclick="editSpace(<?= ejs($space['id']) ?>)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                        <td class="bg-danger text-center"><a href="<?= e(base_url('settings/wiki_spaces?delete_space=' . $space['id'])) ?>" onclick="return confirm(<?= ejs($this->lang_php['space_deleting']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                        <td class="bg-danger text-center"><a href="<?= e(base_url('settings/wiki_spaces?delete_space=' . $space['id'] . '&' . csrf_param())) ?>" onclick="return confirm(<?= ejs($this->lang_php['space_deleting']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -1480,7 +1480,7 @@ $projects_list = $this->getProjects();
                                             <td><?= e($tmpl['name']) ?></td>
                                             <td><?= e(word_limiter(htmlspecialchars($tmpl['content']), 100)) ?></td>
                                             <td class="bg-info text-center"><a href="javascript:void(0)" onclick="editTemplate(<?= ejs($tmpl['id']) ?>)"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                            <td class="bg-danger text-center"><a href="<?= e(base_url('settings/wiki_templates?delete_tmpl=' . $tmpl['id'])) ?>" onclick="return confirm(<?= ejs($this->lang_php['delete_confirm']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
+                                            <td class="bg-danger text-center"><a href="<?= e(base_url('settings/wiki_templates?delete_tmpl=' . $tmpl['id'] . '&' . csrf_param())) ?>" onclick="return confirm(<?= ejs($this->lang_php['delete_confirm']) ?>)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -1624,7 +1624,7 @@ $projects_list = $this->getProjects();
                                                 <tr>
                                                     <td align="center">
                                                         <a class="btn btn-default" onclick="getUpdateInfo(<?= ejs($email['id']) ?>)" data-toggle="modal" data-target="#myModalCreateSync"><em class="fa fa-pencil"></em></a>
-                                                        <a class="btn btn-danger" href="?delete=<?= e($email['id']) ?>" onclick="return confirm(<?= ejs($this->lang_php['delete_confirm']) ?>)"><em class="fa fa-trash"></em></a>
+                                                        <a class="btn btn-danger" href="?delete=<?= e($email['id']) ?>&amp;<?= e(csrf_param()) ?>" onclick="return confirm(<?= ejs($this->lang_php['delete_confirm']) ?>)"><em class="fa fa-trash"></em></a>
                                                         <a class="btn btn-info" onclick="checkConnection(<?= ejs($email['id']) ?>)" data-check-conn="<?= e($email['id']) ?>"><?= e($this->lang_php['check']) ?> <i class="fa fa-refresh" aria-hidden="true"></i></a>
                                                     </td>
                                                     <td><?= e($email['id']) ?></td>

@@ -20,7 +20,7 @@ $projects = $this->getProjects();
                 <a href="<?= e(base_url('settings')) ?>" data-tooltip="tooltip" data-placement="bottom" title="<?= e($this->lang_php['open_settings']) ?>"><i class="fa fa-cog"></i></a>
             <?php } ?>
             <a href=" <?= e(base_url('documentation.html')) ?>" target="_blank" data-tooltip="tooltip" data-placement="bottom" title="<?= e($this->lang_php['read_docs']) ?>"><i class="fa fa-info-circle"></i></a>
-            <a href="<?= e(base_url('logout')) ?>" data-tooltip="tooltip" data-placement="bottom" title="<?= e($this->lang_php['logout']) ?>"><i class="fa fa-sign-out"></i></a>
+            <a href="<?= e(base_url('logout?' . csrf_param())) ?>" data-tooltip="tooltip" data-placement="bottom" title="<?= e($this->lang_php['logout']) ?>"><i class="fa fa-sign-out"></i></a>
         </div>
         <?php if (!empty($projects)) { ?>
             <div class="row">

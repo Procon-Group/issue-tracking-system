@@ -46,8 +46,34 @@ class Main extends Database {
         parent::__construct();
     }
 
+    private function csrfCheck($page) { //every POST, every action link and logout must carry the session's token
+        $action_params = array('delete', 'delete_user', 'delete_project', 'delete_space', 'delete_tmpl', 'deletePage', 'delete_comment', 'remove_track', 'removeLoginImage');
+        $is_action = $_SERVER['REQUEST_METHOD'] === 'POST' || strtolower($page) === 'logout' || count(array_intersect_key($_GET, array_flip($action_params))) > 0;
+        if (!$is_action) {
+            return true;
+        }
+        if (isset($_POST['csrf_token'])) {
+            $token = $_POST['csrf_token'];
+        } elseif (isset($_SERVER['HTTP_X_CSRF_TOKEN'])) {
+            $token = $_SERVER['HTTP_X_CSRF_TOKEN'];
+        } elseif ($_SERVER['REQUEST_METHOD'] !== 'POST' && isset($_GET['csrf_token'])) {
+            $token = $_GET['csrf_token'];
+        } else {
+            $token = null;
+        }
+        unset($_POST['csrf_token']); //handlers that save $_POST must never see it
+        return csrf_valid($token);
+    }
+
     public function run($page, $is_ajax = false) {
         $this->loadLanguage();
+        if ($this->csrfCheck($page) === false) {
+            http_response_code(403);
+            if ($is_ajax !== true) {
+                echo '<!DOCTYPE html><meta charset="utf-8"><title>Request blocked</title><p>This request was blocked because it did not come from a page of this site, or your session expired. <a href="' . e(base_url('home')) . '">Go back</a>, reload the page and try again.</p>';
+            }
+            exit;
+        }
         if ($is_ajax === true) {
             $arr = explode('/', url_segment());
             $ajax_page = strtolower(end($arr));
@@ -67,9 +93,11 @@ class Main extends Database {
             ob_start();
             $this->render($page);
             $page_content = ob_get_clean();
+            ob_start();
             $this->_header($this->title, $this->description);
             echo $page_content;
             $this->_footer();
+            echo csrf_inject(ob_get_clean());
         }
     }
 
@@ -147,8 +175,7 @@ class Main extends Database {
     }
 
     private function setRememberCookie($value, $expire) {
-        $secure = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
-        setcookie("logged", $value, $expire, '/', '', $secure, true);
+        set_app_cookie("logged", $value, $expire);
     }
 
     public function setLogged($cookie, $info_array) {

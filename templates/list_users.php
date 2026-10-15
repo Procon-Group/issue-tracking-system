@@ -16,7 +16,7 @@ function loop_users($profiles, $edit = false, $arr_langs = null) {
                                 <a href="javascript:void(0);" onclick="editUser(<?= ejs($profile['id']) ?>)" class="btn btn-success tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Edit">
                                     <i class="fa fa-pencil"></i>
                                 </a>
-                                <a href="?delete_user=<?= e($profile['id']) ?>" class="btn btn-danger tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete" onClick="return confirm('Are you sure want to delete this user permanently?')">
+                                <a href="?delete_user=<?= e($profile['id']) ?>&amp;<?= e(csrf_param()) ?>" class="btn btn-danger tooltips" data-placement="top" data-toggle="tooltip" data-original-title="Delete" onClick="return confirm('Are you sure want to delete this user permanently?')">
                                     <i class="fa fa-close"></i>
                                 </a>
                             <?php } ?>

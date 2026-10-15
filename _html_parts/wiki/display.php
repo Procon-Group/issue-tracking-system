@@ -145,7 +145,7 @@ $actual_link = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === true ? 'https:/
 
                             <ul class="dropdown-menu pull-right" aria-labelledby="dLabel">
                                 <?php if (in_array($GLOBALS['CONFIG']['PERMISSIONS']['WIKI']['DELETE_PAGES'], $this->permissions)) { ?>
-                                    <li class="bg-danger"><a onclick="return confirm(<?= ejs($this->lang_php['page_del_confirm']) ?>)" href="<?= e(base_url('wiki/' . $project_name . '/display/' . $space_info['key_space'] . '?deletePage=' . $_GET['viewPageId'])) ?>"><i class="fa fa-trash"></i> <?= e($this->lang_php['delete']) ?></a></li>
+                                    <li class="bg-danger"><a onclick="return confirm(<?= ejs($this->lang_php['page_del_confirm']) ?>)" href="<?= e(base_url('wiki/' . $project_name . '/display/' . $space_info['key_space'] . '?deletePage=' . (int) $_GET['viewPageId'] . '&' . csrf_param())) ?>"><i class="fa fa-trash"></i> <?= e($this->lang_php['delete']) ?></a></li>
                                 <?php } ?>
                                 <?php if (in_array($GLOBALS['CONFIG']['PERMISSIONS']['WIKI']['MOVE_PAGES'], $this->permissions)) { ?>
                                     <li><a href="javascript:void(0)" data-toggle="modal" data-target="#pageMove"><i class="fa fa-clone"></i> <?= e($this->lang_php['move']) ?></a></li>

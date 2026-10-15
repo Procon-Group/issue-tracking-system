@@ -411,3 +411,39 @@ function clean_url_ok($url, $allow_data_image = false) {
     }
     return !preg_match('/^[a-z0-9+.-]*:/i', $url); //relative link without a scheme
 }
+
+/*
+ * CSRF protection - one secret per session; every POST and every action link must carry it
+ */
+
+function csrf_token() {
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = random_token();
+    }
+    return $_SESSION['csrf_token'];
+}
+
+function csrf_valid($token) {
+    return is_string($token) && !empty($_SESSION['csrf_token']) && hash_equals($_SESSION['csrf_token'], $token);
+}
+
+function csrf_field() {
+    return '<input type="hidden" name="csrf_token" value="' . e(csrf_token()) . '">';
+}
+
+function csrf_param() { //for links that change data, e.g. ?delete_user=5&csrf_token=...
+    return 'csrf_token=' . urlencode(csrf_token());
+}
+
+function csrf_inject($html) { //add the hidden token field to every POST form in a page
+    return preg_replace('/<form\b[^>]*\bmethod\s*=\s*["\']?post["\']?[^>]*>/i', '$0' . csrf_field(), $html);
+}
+
+function set_app_cookie($name, $value, $expire) {
+    $secure = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off';
+    if (PHP_VERSION_ID >= 70300) {
+        setcookie($name, $value, array('expires' => $expire, 'path' => '/', 'secure' => $secure, 'httponly' => true, 'samesite' => 'Lax'));
+    } else {
+        setcookie($name, $value, $expire, '/; samesite=Lax', '', $secure, true);
+    }
+}
