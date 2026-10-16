@@ -1,5 +1,6 @@
 <?php
 
+$this->requirePermission($GLOBALS['CONFIG']['PERMISSIONS']['SETTINGS_PAGE']);
 if (isset($_POST['uid'])) {
     $value = (int) $_POST['uid'];
 } elseif (isset($_POST['uname'])) {

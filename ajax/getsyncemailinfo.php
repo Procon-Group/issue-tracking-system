@@ -1,5 +1,6 @@
 <?php
 
+$this->requirePermission($GLOBALS['CONFIG']['PERMISSIONS']['SETTINGS_PAGE']); //returns the mailbox password
 if (isset($_POST['eid'])) {
     $value = (int) $_POST['eid'];
 }

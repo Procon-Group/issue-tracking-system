@@ -1,5 +1,6 @@
 <?php
 
+$this->requirePermission($GLOBALS['CONFIG']['PERMISSIONS']['SETTINGS_PAGE']);
 $s_id = (int) $_POST['sid'];
 $result = $this->getSpaces($s_id, 0, 0, 0, null);
 if(empty($result)) {

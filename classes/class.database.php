@@ -107,7 +107,7 @@ class Database extends Mysql {
         }
         $info_pr = '';
         if ($more_info == true) {
-            $info_pr = ",(SELECT COUNT(id) FROM tickets WHERE project = projects.id AND tickets.for_account=" . ACCOUNT_ID . ") as num_tickets,(SELECT COUNT(id) FROM log_tickets WHERE project_id = projects.id AND log_tickets.for_account=" . ACCOUNT_ID . ") as num_logs_tickets, (SELECT COUNT(id) FROM users WHERE users.projects LIKE CONCAT('%',projects.id,'%') AND users.for_account=" . ACCOUNT_ID . ") as num_users";
+            $info_pr = ",(SELECT COUNT(id) FROM tickets WHERE project = projects.id AND tickets.for_account=" . ACCOUNT_ID . ") as num_tickets,(SELECT COUNT(id) FROM log_tickets WHERE project_id = projects.id AND log_tickets.for_account=" . ACCOUNT_ID . ") as num_logs_tickets, (SELECT COUNT(id) FROM users WHERE FIND_IN_SET(projects.id, users.projects) > 0 AND users.for_account=" . ACCOUNT_ID . ") as num_users";
         }
         $result = $this->query("SELECT name, id, abbr, timestamp, sync $info_pr FROM projects" . $where);
         if ($result->num_rows > 0) {
@@ -122,7 +122,7 @@ class Database extends Mysql {
     }
 
     public function getNaviProjects($name) {
-        $result = $this->query("SELECT name, IF(" . $this->quote($name) . " = name, 1, 0) as current FROM projects WHERE for_account=" . ACCOUNT_ID);
+        $result = $this->query("SELECT name, IF(" . $this->quote($name) . " = name, 1, 0) as current FROM projects WHERE id IN (" . $this->intList($this->userProjectIds()) . ") AND for_account=" . ACCOUNT_ID);
         $arr = array();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
@@ -160,10 +160,39 @@ class Database extends Mysql {
     }
 
     public function checkUserProjectPremission($project_id) {
-        $uid = (int) $this->user_id;
-        $project_id = (int) $project_id;
-        $result = $this->query("SELECT id FROM users WHERE id = $uid AND projects LIKE CONCAT('%',$project_id,'%') AND for_account=" . ACCOUNT_ID);
-        return $result->num_rows;
+        return in_array((int) $project_id, $this->userProjectIds(), true) ? 1 : 0;
+    }
+
+    public function userProjectIds() { //ids of the projects the logged-in user may see
+        $result = $this->query("SELECT projects FROM users WHERE id = " . (int) $this->user_id . " AND for_account=" . ACCOUNT_ID);
+        $row = $result !== false ? $result->fetch_row() : null;
+        $ids = array();
+        if ($row !== null) {
+            foreach (explode(',', (string) $row[0]) as $id) {
+                if ((int) $id > 0) {
+                    $ids[] = (int) $id;
+                }
+            }
+        }
+        return array_values(array_unique($ids));
+    }
+
+    public function ticketProjectId($ticket_db_id) {
+        $result = $this->query("SELECT project FROM tickets WHERE id = " . (int) $ticket_db_id . " AND for_account=" . ACCOUNT_ID);
+        $row = $result !== false ? $result->fetch_row() : null;
+        return $row === null ? 0 : (int) $row[0];
+    }
+
+    public function spaceProjectId($space_id) {
+        $result = $this->query("SELECT project_id FROM wiki_spaces WHERE id = " . (int) $space_id . " AND for_account=" . ACCOUNT_ID);
+        $row = $result !== false ? $result->fetch_row() : null;
+        return $row === null ? 0 : (int) $row[0];
+    }
+
+    public function pageProjectId($page_id) {
+        $result = $this->query("SELECT wiki_spaces.project_id FROM wiki_pages INNER JOIN wiki_spaces ON wiki_spaces.id = wiki_pages.for_space WHERE wiki_pages.id = " . (int) $page_id . " AND wiki_pages.for_account=" . ACCOUNT_ID);
+        $row = $result !== false ? $result->fetch_row() : null;
+        return $row === null ? 0 : (int) $row[0];
     }
 
     public function getUserLanguage($user_id) {
@@ -473,9 +502,9 @@ class Database extends Mysql {
                 } else {
                     $data['timeclosed'] = 0;
                 }
-                $this->setTicketLog($this->user_id, $this->project_id, 'create', $data['ticket_id'], $post['description']);
                 $result = $this->query($this->insertSql('tickets', $data));
                 $last_id = $this->conn->insert_id; //insert watchers
+                $watchers_for_log = $watchers;
             }
 
             $last_id = (int) $last_id;
@@ -501,6 +530,9 @@ class Database extends Mysql {
                     }
                 }
                 $this->query("INSERT INTO watchers (for_account, user_id, ticket_id, start_time) VALUES $w_insert");
+            }
+            if (isset($watchers_for_log)) { //new ticket: log once it and its watchers exist
+                $this->setTicketLog($this->user_id, $data['project'], 'create', $data['ticket_id'], $post['description']);
             }
             if (!empty($deleted_watchers)) {
                 $w_delete = $this->intList($deleted_watchers);
@@ -560,15 +592,16 @@ class Database extends Mysql {
         return $result;
     }
 
-    public function changeTicketStatus($ticketid, $tostatusid) {
+    public function changeTicketStatus($ticketid, $tostatusid, $project_id) {
         $ticketid = (int) $ticketid;
+        $project_id = (int) $project_id;
         $tostatusid = (int) $tostatusid;
         if ($tostatusid == 4) {
             $timeclosed = time();
         } else {
             $timeclosed = 0;
         }
-        $result = $this->query("UPDATE tickets SET status='$tostatusid', timeclosed = '$timeclosed' WHERE ticket_id = '$ticketid' AND for_account=" . ACCOUNT_ID);
+        $result = $this->query("UPDATE tickets SET status='$tostatusid', timeclosed = '$timeclosed' WHERE ticket_id = '$ticketid' AND project = $project_id AND for_account=" . ACCOUNT_ID);
         return $result;
     }
 
@@ -586,7 +619,7 @@ class Database extends Mysql {
         $t_abbr_id = (int) $t_abbr_id['id'];
         $this->query("DELETE FROM saved_tracktimes WHERE project_id = '$project_id' AND ticket_id = '$t_abbr_id' AND for_account=" . ACCOUNT_ID);
         $this->query("DELETE FROM log_tickets WHERE project_id = '$project_id' AND ticket_id = '$t_abbr_id' AND for_account=" . ACCOUNT_ID);
-        $this->query("DELETE FROM connected_tickets WHERE ticket_1 = $id OR ticket_2 = $id AND for_account=" . ACCOUNT_ID);
+        $this->query("DELETE FROM connected_tickets WHERE (ticket_1 = $id OR ticket_2 = $id) AND for_account=" . ACCOUNT_ID);
         return $result;
     }
 
@@ -810,18 +843,21 @@ class Database extends Mysql {
                 if ($u_id != $user_id) {
                     $u_id = $row['user_id'];
                     $usr_ids[] = $u_id;
-                    $values .= " (" . ACCOUNT_ID . ", '$u_id', '$log_id'),";
+                    $values .= " (" . ACCOUNT_ID . ", " . (int) $u_id . ", " . ($what === 0 ? "$log_id, 0" : "0, $log_id") . "),";
                 }
             }
-            $emails = $this->getUserEmailForNotif(array(1, 2));
-            $emails = implode(", ", $emails);
-            send_notification_emails($emails);
+            if (!empty($usr_ids)) {
+                $emails = $this->getUserEmailForNotif($usr_ids);
+                if (!empty($emails)) {
+                    send_notification_emails(implode(", ", $emails));
+                }
+            }
             $values = rtrim($values, ",");
             if (!empty($values)) {
                 if ($what === 0) {
-                    $this->query("INSERT INTO notifications (for_account. user_id, ticket_log_id) VALUES $values");
+                    $this->query("INSERT INTO notifications (for_account, user_id, ticket_log_id, wiki_log_id) VALUES $values");
                 } else {
-                    $this->query("INSERT INTO notifications (for_account, user_id, wiki_log_id) VALUES $values");
+                    $this->query("INSERT INTO notifications (for_account, user_id, ticket_log_id, wiki_log_id) VALUES $values");
                 }
             }
         }
@@ -834,7 +870,7 @@ class Database extends Mysql {
         $to = (int) $to;
         $arr = array();
         $ids = array();
-        $result = $this->query("SELECT log_tickets.event, notifications.id as notif_id, users.fullname, users.username ,tickets.subject, projects.abbr, tickets.ticket_id, projects.name as proj_name FROM log_tickets INNER JOIN notifications ON notifications.ticket_log_id = log_tickets.id LEFT JOIN users ON users.id = log_tickets.user_id LEFT JOIN tickets ON tickets.ticket_id = log_tickets.ticket_id AND tickets.project = log_tickets.project_id INNER JOIN projects ON projects.id = tickets.project WHERE notifications.user_id = $user_id AND log_tickets.project_id = $project_id AND notifications.previewed = 0 AND notifications.for_account=" . ACCOUNT_ID . ", AND tickets.for_account=" . ACCOUNT_ID . ", AND users.for_account=" . ACCOUNT_ID . ", AND projects.for_account=" . ACCOUNT_ID . " LIMIT $from, $to");
+        $result = $this->query("SELECT log_tickets.event, notifications.id as notif_id, users.fullname, users.username ,tickets.subject, projects.abbr, tickets.ticket_id, projects.name as proj_name FROM log_tickets INNER JOIN notifications ON notifications.ticket_log_id = log_tickets.id LEFT JOIN users ON users.id = log_tickets.user_id LEFT JOIN tickets ON tickets.ticket_id = log_tickets.ticket_id AND tickets.project = log_tickets.project_id INNER JOIN projects ON projects.id = tickets.project WHERE notifications.user_id = $user_id AND log_tickets.project_id = $project_id AND notifications.previewed = 0 AND notifications.for_account=" . ACCOUNT_ID . " AND tickets.for_account=" . ACCOUNT_ID . " AND projects.for_account=" . ACCOUNT_ID . " LIMIT $from, $to");
         if ($result !== false) {
             while ($row = $result->fetch_assoc()) {
                 $arr['notifs'][] = $row;
@@ -854,7 +890,7 @@ class Database extends Mysql {
         $to = (int) $to;
         $arr = array();
         $ids = array();
-        $result = $this->query("SELECT log_wiki.event, notifications.id as notif_id, users.fullname, wiki_pages.title, wiki_pages.id as page_id, projects.name as proj_name, wiki_spaces.key_space, users.username FROM log_wiki INNER JOIN notifications ON notifications.wiki_log_id = log_wiki.id LEFT JOIN users ON users.id = log_wiki.user_id LEFT JOIN wiki_pages ON wiki_pages.id = log_wiki.page_id INNER JOIN wiki_spaces ON wiki_spaces.id = wiki_pages.for_space INNER JOIN projects ON projects.id = wiki_spaces.project_id WHERE notifications.user_id = $user_id AND log_wiki.project_id = $project_id AND notifications.previewed = 0 AND notifications.for_account=" . ACCOUNT_ID . ", AND log_wiki.for_account=" . ACCOUNT_ID . ", AND projects.for_account=" . ACCOUNT_ID . " AND users.for_account=" . ACCOUNT_ID . " AND wiki_spaces.for_account=" . ACCOUNT_ID . " LIMIT $from, $to");
+        $result = $this->query("SELECT log_wiki.event, notifications.id as notif_id, users.fullname, wiki_pages.title, wiki_pages.id as page_id, projects.name as proj_name, wiki_spaces.key_space, users.username FROM log_wiki INNER JOIN notifications ON notifications.wiki_log_id = log_wiki.id LEFT JOIN users ON users.id = log_wiki.user_id LEFT JOIN wiki_pages ON wiki_pages.id = log_wiki.page_id INNER JOIN wiki_spaces ON wiki_spaces.id = wiki_pages.for_space INNER JOIN projects ON projects.id = wiki_spaces.project_id WHERE notifications.user_id = $user_id AND log_wiki.project_id = $project_id AND notifications.previewed = 0 AND notifications.for_account=" . ACCOUNT_ID . " AND log_wiki.for_account=" . ACCOUNT_ID . " AND projects.for_account=" . ACCOUNT_ID . " AND wiki_spaces.for_account=" . ACCOUNT_ID . " LIMIT $from, $to");
         if ($result !== false) {
             while ($row = $result->fetch_assoc()) {
                 $arr['notifs'][] = $row;
@@ -906,8 +942,8 @@ class Database extends Mysql {
         $limit_from = (int) $limit_from;
         $limit_to = (int) $limit_to;
 
-        if ($project_id == 0) {
-            $w_proj = "";
+        if ($project_id == 0) { //all projects = all projects this user belongs to
+            $w_proj = "AND log_tickets.project_id IN (" . $this->intList($this->userProjectIds()) . ")";
         } else {
             $w_proj = "AND log_tickets.project_id = $project_id";
         }
@@ -936,8 +972,8 @@ UNION
         $limit_from = (int) $limit_from;
         $limit_to = (int) $limit_to;
 
-        if ($project_id == 0) {
-            $w_proj = "WHERE log_wiki.for_account=" . ACCOUNT_ID;
+        if ($project_id == 0) { //all projects = all projects this user belongs to
+            $w_proj = "WHERE log_wiki.project_id IN (" . $this->intList($this->userProjectIds()) . ") AND log_wiki.for_account=" . ACCOUNT_ID;
         } else {
             $w_proj = "WHERE log_wiki.project_id = $project_id AND log_wiki.for_account=" . ACCOUNT_ID;
         }
@@ -958,7 +994,7 @@ UNION
         $limit_to = (int) $limit_to;
         $result = $this->query("(SELECT log_wiki.time, users.image, users.fullname, users.username, log_wiki.event, '0' as is_ticket, projects.name as p_name, '' as p_abbr, '' as ticket_id, '' as subject, '' as text, log_wiki.space_key, wiki_pages.title as page_title, log_wiki.page_id, wiki_pages.id as wiki_p_id, wiki_pages_updates.content, wiki_pages_updates.id as update_id FROM log_wiki INNER JOIN projects ON projects.id = log_wiki.project_id LEFT JOIN users ON users.id = log_wiki.user_id INNER JOIN wiki_pages ON wiki_pages.id = log_wiki.page_id LEFT JOIN wiki_pages_updates ON wiki_pages_updates.id = log_wiki.page_update_id WHERE log_wiki.for_account=" . ACCOUNT_ID . " ORDER BY log_wiki.time DESC LIMIT $limit_from, $limit_to) 
 UNION 
-(SELECT log_tickets.time, users.image, users.fullname, users.username, log_tickets.event, '1' as is_ticket, projects.name as p_name, projects.abbr as p_abbr, tickets.ticket_id, tickets.subject, log_tickets.text, '', '', '', '', '', '' FROM log_tickets INNER JOIN projects ON projects.id = log_tickets.project_id INNER JOIN tickets ON tickets.ticket_id = log_tickets.ticket_id AND tickets.project = log_tickets.project_id LEFT JOIN users ON users.id = log_tickets.user_id WHERE log_wiki.for_account=" . ACCOUNT_ID . " ORDER BY log_tickets.time DESC LIMIT $limit_from, $limit_to) ORDER BY time DESC");
+(SELECT log_tickets.time, users.image, users.fullname, users.username, log_tickets.event, '1' as is_ticket, projects.name as p_name, projects.abbr as p_abbr, tickets.ticket_id, tickets.subject, log_tickets.text, '', '', '', '', '', '' FROM log_tickets INNER JOIN projects ON projects.id = log_tickets.project_id INNER JOIN tickets ON tickets.ticket_id = log_tickets.ticket_id AND tickets.project = log_tickets.project_id LEFT JOIN users ON users.id = log_tickets.user_id WHERE log_tickets.for_account=" . ACCOUNT_ID . " ORDER BY log_tickets.time DESC LIMIT $limit_from, $limit_to) ORDER BY time DESC");
         if ($result !== false) {
             while ($row = $result->fetch_assoc()) {
                 $arr[] = $row;
@@ -1165,13 +1201,13 @@ UNION
             }
             $deleted_logs = $this->intList($arr_n);
 
-            $this->query("DELETE FROM watchers WHERE user_id IN ($deleted_tickets) AND for_account=" . ACCOUNT_ID);
+            $this->query("DELETE FROM watchers WHERE ticket_id IN ($deleted_tickets) AND for_account=" . ACCOUNT_ID);
             $this->query("DELETE FROM tickets WHERE project = $id AND for_account=" . ACCOUNT_ID);
             $this->query("DELETE FROM saved_tracktimes WHERE project_id = $id AND for_account=" . ACCOUNT_ID);
             $this->query("DELETE FROM started_track_times WHERE ticket_id IN ($deleted_tickets) AND for_account=" . ACCOUNT_ID);
             $this->query("DELETE FROM comments WHERE ticket_id IN ($deleted_tickets) AND for_account=" . ACCOUNT_ID);
             $this->query("DELETE FROM log_tickets WHERE project_id = $id AND for_account=" . ACCOUNT_ID);
-            $this->query("DELETE FROM notifications WHERE log_id IN ($deleted_logs) AND for_account=" . ACCOUNT_ID);
+            $this->query("DELETE FROM notifications WHERE ticket_log_id IN ($deleted_logs) AND for_account=" . ACCOUNT_ID);
             $this->query("DELETE FROM projects WHERE id = $id AND for_account=" . ACCOUNT_ID);
         }
     }
@@ -1180,7 +1216,7 @@ UNION
         $where = 'WHERE for_account=' . ACCOUNT_ID;
         if ($search !== null) {
             $search = $this->escape($search);
-            $where = "WHERE fullname LIKE '%$search%' OR username LIKE '%$search%' AND for_account=" . ACCOUNT_ID;
+            $where = "WHERE (fullname LIKE '%$search%' OR username LIKE '%$search%') AND for_account=" . ACCOUNT_ID;
         }
         $result = $this->query("SELECT COUNT(*) as num FROM users $where");
         return $result->fetch_assoc()['num'];
@@ -1197,7 +1233,7 @@ UNION
         $where = 'WHERE users.for_account=' . ACCOUNT_ID;
         if ($search !== null) {
             $search = $this->escape(urldecode($search));
-            $where = "WHERE fullname LIKE '%$search%' OR username LIKE '%$search%' AND users.for_account=" . ACCOUNT_ID;
+            $where = "WHERE (fullname LIKE '%$search%' OR username LIKE '%$search%') AND users.for_account=" . ACCOUNT_ID;
         }
 
         if (is_int($id_or_name) && $id_or_name != 0) {
@@ -1210,9 +1246,9 @@ UNION
         if (isset($_GET['for_proj'])) {
             $proj_id = (int) $_GET['for_proj'];
             if ($where == '') {
-                $where = "WHERE users.projects LIKE '%$proj_id%' AND users.for_account=" . ACCOUNT_ID;
+                $where = "WHERE FIND_IN_SET($proj_id, users.projects) > 0 AND users.for_account=" . ACCOUNT_ID;
             } else {
-                $where .= " AND projects LIKE '%$proj_id%'";
+                $where .= " AND FIND_IN_SET($proj_id, users.projects) > 0";
             }
         }
 
@@ -1746,7 +1782,7 @@ UNION
                     $a = 'WHERE';
                 else
                     $a = 'AND';
-                $where .= " $a wiki_pages.created BETWEEN $from_date AND $to_date AND wiki_pages=" . ACCOUNT_ID;
+                $where .= " $a wiki_pages.created BETWEEN $from_date AND $to_date AND wiki_pages.for_account=" . ACCOUNT_ID;
             }
             ;
         }
@@ -1796,7 +1832,7 @@ UNION
         if ($my_ticket > 0) {
             $not_me = ' AND tickets.id !=' . $my_ticket;
         }
-        $result = $this->query("SELECT tickets.id, subject, ticket_id, abbr, projects.name as name FROM tickets INNER JOIN projects ON projects.id = tickets.project WHERE subject LIKE '%$s_term%' $not_me AND tickets.for_account=" . ACCOUNT_ID . " LIMIT 5");
+        $result = $this->query("SELECT tickets.id, subject, ticket_id, abbr, projects.name as name FROM tickets INNER JOIN projects ON projects.id = tickets.project WHERE subject LIKE '%$s_term%' $not_me AND tickets.project IN (" . $this->intList($this->userProjectIds()) . ") AND tickets.for_account=" . ACCOUNT_ID . " LIMIT 5");
         if ($result !== false) {
             while ($row = $result->fetch_assoc()) {
                 $arr[] = $row;
@@ -1862,7 +1898,7 @@ UNION
     public function getIssueLinks($t_id) {
         $arr = array();
         $t_id = (int) $t_id;
-        $result = $this->query('SELECT id, ticket_1, ticket_2, type, IF(ticket_1=' . $t_id . ', 1, 0) as who_is, IF(ticket_1=' . $t_id . ', ticket_2, ticket_1) as get_from, (SELECT subject FROM tickets WHERE id = get_from) as subject, (SELECT project FROM tickets WHERE id = get_from) as project_id, (SELECT ticket_id FROM tickets WHERE id = get_from) as ticket_id, (SELECT abbr FROM projects WHERE id = project_id) as project_abbr, (SELECT name FROM projects WHERE id = project_id) as project_name FROM connected_tickets WHERE ticket_1 = ' . $t_id . ' OR ticket_2 = ' . $t_id . ' AND connected_tickets.for_account=' . ACCOUNT_ID);
+        $result = $this->query('SELECT id, ticket_1, ticket_2, type, IF(ticket_1=' . $t_id . ', 1, 0) as who_is, IF(ticket_1=' . $t_id . ', ticket_2, ticket_1) as get_from, (SELECT subject FROM tickets WHERE id = get_from) as subject, (SELECT project FROM tickets WHERE id = get_from) as project_id, (SELECT ticket_id FROM tickets WHERE id = get_from) as ticket_id, (SELECT abbr FROM projects WHERE id = project_id) as project_abbr, (SELECT name FROM projects WHERE id = project_id) as project_name FROM connected_tickets WHERE (ticket_1 = ' . $t_id . ' OR ticket_2 = ' . $t_id . ') AND connected_tickets.for_account=' . ACCOUNT_ID);
         if ($result !== false) {
             while ($row = $result->fetch_assoc()) {
                 $arr[] = $row;

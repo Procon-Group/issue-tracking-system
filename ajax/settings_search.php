@@ -1,4 +1,6 @@
 <?php
+
+$this->requirePermission($GLOBALS['CONFIG']['PERMISSIONS']['SETTINGS_PAGE']);
 $result = $this->getSettingsSearchResults($_POST['find']);
 if(!empty($result)) {
     foreach ($result as $res) {

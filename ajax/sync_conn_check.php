@@ -1,5 +1,6 @@
 <?php
 
+$this->requirePermission(array($GLOBALS['CONFIG']['PERMISSIONS']['SETTINGS_PAGE'], $GLOBALS['CONFIG']['PERMISSIONS']['CREATE_PROJECT']));
 require 'classes/PHPMailer/PHPMailerAutoload.php';
 
 $mail = new PHPMailer();

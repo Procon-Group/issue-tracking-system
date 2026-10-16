@@ -1,5 +1,6 @@
 <?php
 
+$this->requirePermission($GLOBALS['CONFIG']['PERMISSIONS']['SETTINGS_PAGE']);
 $t_id = (int) $_POST['tid'];
 $result = $this->getTemplateInfo($t_id);
 if(empty($result)) {

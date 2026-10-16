@@ -1,5 +1,6 @@
 <?php
 
+$this->requireProject($_POST['project_id']);
 $result = $this->getTicketNotifications($_POST['project_id'], $this->user_id, $_POST['from'], $_POST['to']);
 if(!empty($result['notifs'])) {
     $html = '';

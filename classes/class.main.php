@@ -227,6 +227,23 @@ class Main extends Database {
         return true;
     }
 
+    public function requirePermission($permission_ids) { //stop unless the user has one of these permissions
+        foreach ((array) $permission_ids as $permission) {
+            if (in_array($permission, (array) $this->permissions)) {
+                return;
+            }
+        }
+        http_response_code(403);
+        exit;
+    }
+
+    public function requireProject($project_id) { //stop unless the user belongs to this project
+        if ((int) $project_id <= 0 || $this->checkUserProjectPremission($project_id) == 0) {
+            http_response_code(403);
+            exit;
+        }
+    }
+
     public function loginCheck() {
         $logged = $this->authenticate();
         if ($logged === true && $this->page == 'login') {

@@ -5,7 +5,10 @@ if (!defined('APPLICATION_LOADED') || !APPLICATION_LOADED) {
 $this->title = $_SERVER['HTTP_HOST'] . ' - ' . $this->lang_php['title_select_project'];
 $this->description = 'This is your home page';
 
-$projects = $this->getProjects();
+$my_project_ids = $this->userProjectIds();
+$projects = array_values(array_filter($this->getProjects(), function ($project) use ($my_project_ids) {
+    return in_array((int) $project['id'], $my_project_ids, true);
+}));
 ?>
 <link href='https://fonts.googleapis.com/css?family=Indie+Flower' rel='stylesheet' type='text/css'>
 <div id="content">

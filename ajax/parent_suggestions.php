@@ -1,4 +1,6 @@
 <?php
+
+$this->requireProject($_POST['proj_id']);
 $result = $this->getSuggestions($_POST['find'], $_POST['proj_id'], $_POST['space']);
 if(!empty($result)) {
     foreach ($result as $res) {
